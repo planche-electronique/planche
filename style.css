@@ -26,16 +26,7 @@
 
 /* barre du haut du tableau*/
 table {
-    width: 100%;
     margin-top: 40px;
-    position: center;
-    right: 0px;
-    left: 0px;
-}
-
-.ligne_info {
-    position: fixed;
-    background-color: white;
-    margin: 0;
-    left: 0;
+    border-collapse: collapse;
+    width: 100%;
 }
