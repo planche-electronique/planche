@@ -44,6 +44,16 @@ td {
 }
 
 #soumission {
-    margin-top: 30px;
+    margin-top: 10px;
+    text-align: center;
+}
+
+p {
+    margin: 10px;
+}
+
+#credits {
+    bottom: 10px;
+    position: absolute;
     text-align: center;
 }

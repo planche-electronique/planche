@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', (event) => {
+
+
+    let bouton = document.getElementById("bouton_soumission");
+    bouton.addEventListener("click", (event) => {
+        let code_pilote = document.getElementById("champ_code_pilote").value;
+        let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
+        let body = document.getElementById("body");
+        /*requete*/
+    })
     if (false) {
         let body = document.getElementById("body");
         body.insertAdjacentHTML('beforeend',`<ul class="menu">
@@ -30,20 +39,18 @@ document.addEventListener('DOMContentLoaded', (event) => {
             </tbody>
             
         </table>`);
-    }
-    
-    
-    let tableau = document.getElementById("tableau");
-    var body_tableau = tableau.getElementsByTagName("tbody")[0];
-    function nouvelle_ligne(body_tableau) {
-        tr = body_tableau.insertRow(0);
-        for (let i=0; i<12;i+=1) {
-            actual_th = tr.insertCell(0);
-            actual_th.textContent = i.toString();
+        let tableau = document.getElementById("tableau");
+        var body_tableau = tableau.getElementsByTagName("tbody")[0];
+        function nouvelle_ligne(body_tableau) {
+            tr = body_tableau.insertRow(0);
+            for (let i=0; i<12;i+=1) {
+                actual_th = tr.insertCell(0);
+                actual_th.textContent = i.toString();
+            }
         }
-    }
-    for( let l = 0; l <40; l+=1) {
-        nouvelle_ligne(body_tableau);
+        for( let l = 0; l <40; l+=1) {
+            nouvelle_ligne(body_tableau);
+        }
     }
 })
 
