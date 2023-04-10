@@ -34,3 +34,16 @@ table {
 td {
     text-align: center;
 }
+/*la plus belle page de connection*/
+#code_pilote {
+    text-align : center;
+}
+
+#mot_de_passe {
+    text-align: center;
+}
+
+#soumission {
+    margin-top: 30px;
+    text-align: center;
+}
