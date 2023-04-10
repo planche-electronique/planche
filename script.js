@@ -1,3 +1,8 @@
+import {CodeDecollage, CodeVol} from "types.js";
+
+
+
+
 document.addEventListener('DOMContentLoaded', (event) => {
     let bouton = document.getElementById("bouton_soumission");
 
@@ -13,6 +18,9 @@ document.addEventListener('DOMContentLoaded', (event) => {
         /*requete*/
         let formulaire = document.getElementById("formulaire de connexion");
         formulaire.remove();
+        let planche = [];
+        let ligne = new Object();
+
 
         
         /*ajoute le tableau*/
