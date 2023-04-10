@@ -1,6 +1,15 @@
-import {CodeDecollage, CodeVol} from "types.js";
+const CodeDecollage = {
+    T: "T",
+    R: "R",
+};
 
-
+const CodeVol = {
+    S: "S",
+    E: "E",
+    B: "B",
+    C: "C",
+    M: "M",
+}
 
 
 document.addEventListener('DOMContentLoaded', (event) => {
