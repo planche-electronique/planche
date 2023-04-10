@@ -1,3 +1,29 @@
+/*la plus belle page de connexion*/
+#code_pilote {
+    text-align : center;
+}
+
+#mot_de_passe {
+    text-align: center;
+}
+
+#soumission {
+    margin-top: 10px;
+    text-align: center;
+}
+
+p {
+    margin: 10px;
+}
+
+#credits {
+    bottom: 10px;
+    position: absolute;
+    text-align: center;
+}
+
+
+
 /*barre de menu*/
 .menu {
     padding: 5px;
@@ -24,6 +50,7 @@
 }
 
 
+
 /* barre du haut du tableau*/
 table {
     margin-top: 40px;
@@ -32,28 +59,5 @@ table {
 }
 
 td {
-    text-align: center;
-}
-/*la plus belle page de connection*/
-#code_pilote {
-    text-align : center;
-}
-
-#mot_de_passe {
-    text-align: center;
-}
-
-#soumission {
-    margin-top: 10px;
-    text-align: center;
-}
-
-p {
-    margin: 10px;
-}
-
-#credits {
-    bottom: 10px;
-    position: absolute;
     text-align: center;
 }
