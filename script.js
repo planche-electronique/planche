@@ -1,3 +1,5 @@
+
+
 const CodeDecollage = {
     T: "T",
     R: "R",
@@ -65,6 +67,20 @@ document.addEventListener('DOMContentLoaded', (event) => {
         
         let tableau = document.getElementById("tableau");
         var body_tableau = tableau.getElementsByTagName("tbody")[0];
+
+        let response = fetch('http://127.0.0.1:7878/vols.json')
+            .then(response => response.json())
+            .then(function(vols) {
+                for (var vol of vols) {
+                    let ligne = tableau.insertRow()
+                    for (const valeur of Object.values(vol)) {
+                        let cellule = ligne.insertCell();
+                        console.log(valeur);
+                        let texte = document.createTextNode(valeur.toString());
+                        cellule.appendChild(texte);
+                    }
+                }
+            });
     })
 })
 
