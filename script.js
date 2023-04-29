@@ -50,14 +50,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         <th>Code de décollage</th>
                         <th>Avec</th>
                         <th>Par</th>
-                        <th>Durée</th>
                         <th>Immatriculation</th>
                         <th>Code vol</th>
+                        <th>Commandant de bord ou instructeur</th>
+                        <th>Pilote 2 ou élève</th>
                         <th>Heure de décollage</th>
                         <th>Heure d'atterissage</th>
                         <th> Durée du vol</th>
-                        <th>Commandant de bord ou instructeur</th>
-                        <th>Pilote 2 ou élève</th>
                     </tr>
                 </thead>
                 <tbody id="body_tableau"> 
