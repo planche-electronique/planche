@@ -1,4 +1,39 @@
+async function premier_chargement_des_ressources(tableau) {
+    let immatriculations = await fetch('http://127.0.0.1:7878/immatriculations.json').then(response => response.json());
+        
+    let pilotes = await fetch('http://127.0.0.1:7878/pilotes.json').then(response => response.json());
+    fetch('http://127.0.0.1:7878/vols.json')
+        .then(response => response.json())
+        .then(function(vols) {
+            for (var vol of vols) {
+                let ligne = tableau.insertRow();
+                let heure_decollage = vol.decollage.slice(0, 2);
+                let minute_decollage = vol.decollage.slice(3, 5);
+                let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
 
+                let heure_atterissage= vol.atterissage.slice(0, 2);
+                let minute_atterissage = vol.atterissage.slice(3, 5);
+                let atterissage = new Date(0, 0, 0, heure_atterissage, minute_atterissage);
+
+                let temps_vol = atterissage - decollage;
+                let heures = Math.floor(temps_vol / 3600000).toString();
+                let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
+                if (minutes < 10) {
+                    minutes = "0" + minutes.toString();
+                } else {
+                    minutes = minutes.toString();
+                }
+                    
+                vol.temps_vol = heures + "h" + minutes;
+               //console.log(vol.temps_vol);
+                for (const valeur of Object.values(vol)) {
+                    let cellule = ligne.insertCell();
+                    let texte = document.createTextNode(valeur.toString());
+                    cellule.appendChild(texte);
+                }
+            }
+        });
+}
 
 const CodeDecollage = {
     T: "T",
@@ -67,37 +102,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
         let tableau = document.getElementById("tableau");
         var body_tableau = tableau.getElementsByTagName("tbody")[0];
 
-        let response = fetch('http://127.0.0.1:7878/vols.json')
-            .then(response => response.json())
-            .then(function(vols) {
-                for (var vol of vols) {
-                    let ligne = tableau.insertRow();
-                    let heure_decollage = vol.decollage.slice(0, 2);
-                    let minute_decollage = vol.decollage.slice(3, 5);
-                    let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
-
-                    let heure_atterissage= vol.atterissage.slice(0, 2);
-                    let minute_atterissage = vol.atterissage.slice(3, 5);
-                    let atterissage = new Date(0, 0, 0, heure_atterissage, minute_atterissage);
-
-                    let temps_vol = atterissage - decollage;
-                    let heures = Math.floor(temps_vol / 3600000).toString();
-                    let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
-                    if (minutes < 10) {
-                        minutes = "0" + minutes.toString();
-                    } else {
-                        minutes = minutes.toString();
-                    }
-                    
-                    vol.temps_vol = heures + "h" + minutes;
-                    //console.log(vol.temps_vol);
-                    for (const valeur of Object.values(vol)) {
-                        let cellule = ligne.insertCell();
-                        let texte = document.createTextNode(valeur.toString());
-                        cellule.appendChild(texte);
-                    }
-                }
-            });
+        premier_chargement_des_ressources(tableau);
     })
 })
 
