@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', (event) => {
                         <th>Avec</th>
                         <th>Par</th>
                         <th>Immatriculation</th>
-                        <th>Code vol</th>
+                       <th>Code vol</th>
                         <th>Commandant de bord ou instructeur</th>
                         <th>Pilote 2 ou élève</th>
                         <th>Heure de décollage</th>
@@ -71,10 +71,28 @@ document.addEventListener('DOMContentLoaded', (event) => {
             .then(response => response.json())
             .then(function(vols) {
                 for (var vol of vols) {
-                    let ligne = tableau.insertRow()
+                    let ligne = tableau.insertRow();
+                    let heure_decollage = vol.decollage.slice(0, 2);
+                    let minute_decollage = vol.decollage.slice(3, 5);
+                    let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
+
+                    let heure_atterissage= vol.atterissage.slice(0, 2);
+                    let minute_atterissage = vol.atterissage.slice(3, 5);
+                    let atterissage = new Date(0, 0, 0, heure_atterissage, minute_atterissage);
+
+                    let temps_vol = atterissage - decollage;
+                    let heures = Math.floor(temps_vol / 3600000).toString();
+                    let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
+                    if (minutes < 10) {
+                        minutes = "0" + minutes.toString();
+                    } else {
+                        minutes = minutes.toString();
+                    }
+                    
+                    vol.temps_vol = heures + "h" + minutes;
+                    //console.log(vol.temps_vol);
                     for (const valeur of Object.values(vol)) {
                         let cellule = ligne.insertCell();
-                        console.log(valeur);
                         let texte = document.createTextNode(valeur.toString());
                         cellule.appendChild(texte);
                     }
