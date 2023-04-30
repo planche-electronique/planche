@@ -39,6 +39,9 @@ async function premier_chargement_des_ressources(document, tableau) {
                             liste.appendChild(option);
                         }
                         liste.value = champ;
+                        liste.addEventListener("change", (event => {
+                            //envoyer la requete avec le numero du vol et le champ changé et sa nouvelle valeure (ce qui fait un objet plus petit que si on renvoyait tout un vol)
+                        });
                     }
                     let texte = document.createTextNode(valeur.toString());
                     cellule.appendChild(texte);
