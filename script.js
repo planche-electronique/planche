@@ -24,7 +24,7 @@ async function premier_chargement_des_ressources(document, tableau) {
                     minutes = minutes.toString();
                 }
                     
-                vol.temps_vol = heures + "h" + minutes;
+                vol.temps_vol = heures + ":" + minutes;
                //console.log(vol.temps_vol);
                 for (const [champ, valeur] of Object.entries(vol)) {
                     let cellule = ligne.insertCell();
