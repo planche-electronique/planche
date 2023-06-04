@@ -1,53 +1,51 @@
-async function premier_chargement_des_ressources(document, tableau) {
-    let immatriculations = await fetch('http://127.0.0.1:7878/immatriculations.json').then(response => response.json());
+async function chargement_des_ressources(document, tableau) {
+    let immatriculations = fetch('http://127.0.0.1:7878/immatriculations.json').then(response => response.json());
         
-    let pilotes = await fetch('http://127.0.0.1:7878/pilotes.json').then(response => response.json());
-    fetch('http://127.0.0.1:7878/vols.json')
-        .then(response => response.json())
-        .then(function(vols) {
-            for (var vol of vols) {
-                let ligne = tableau.insertRow();
-                let heure_decollage = vol.decollage.slice(0, 2);
-                let minute_decollage = vol.decollage.slice(3, 5);
-                let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
+    let pilotes = await lire_json('http://127.0.0.1:7878/pilotes.json');
+    let vols = await lire_json('http://127.0.0.1:7878/vols.json');
+    for (var vol of vols) {
+        let ligne = tableau.insertRow();
+        let heure_decollage = vol.decollage.slice(0, 2);
+        let minute_decollage = vol.decollage.slice(3, 5);
+        let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
 
-                let heure_atterissage= vol.atterissage.slice(0, 2);
-                let minute_atterissage = vol.atterissage.slice(3, 5);
-                let atterissage = new Date(0, 0, 0, heure_atterissage, minute_atterissage);
+        let heure_atterissage= vol.atterissage.slice(0, 2);
+        let minute_atterissage = vol.atterissage.slice(3, 5);
+        let atterissage = new Date(0, 0, 0, heure_atterissage, minute_atterissage);
 
-                let temps_vol = atterissage - decollage;
-                let heures = Math.floor(temps_vol / 3600000).toString();
-                let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
-                if (minutes < 10) {
-                    minutes = "0" + minutes.toString();
-                } else {
-                    minutes = minutes.toString();
-                }
+        let temps_vol = atterissage - decollage;
+        let heures = Math.floor(temps_vol / 3600000).toString();
+        let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
+        if (minutes < 10) {
+            minutes = "0" + minutes.toString();
+        } else {
+            minutes = minutes.toString();
+        }
+                
                     
-                vol.temps_vol = heures + ":" + minutes;
-               //console.log(vol.temps_vol);
-                for (const [champ, valeur] of Object.entries(vol)) {
-                    let cellule = ligne.insertCell();
+        vol.temps_vol = heures + ":" + minutes;
+       //console.log(vol.temps_vol);
+        for (const [champ, valeur] of Object.entries(vol)) {
+            let cellule = ligne.insertCell();
+            typeof(pilotes);
                     
-                    if (champ == "pilote1" || champ == "pilote2") {
-                        let liste = document.createElement("select");    
-                        cellule.appendChild(liste);
-                        for (let pilote of pilotes) {
-                            let option = document.createElement("option");
-                            option.value = pilote;
-                            option.text = pilote;
-                            liste.appendChild(option);
-                        }
-                        liste.value = champ;
-                        liste.addEventListener("change", (event => {
-                            //envoyer la requete avec le numero du vol et le champ changé et sa nouvelle valeure (ce qui fait un objet plus petit que si on renvoyait tout un vol)
-                        });
-                    }
-                    let texte = document.createTextNode(valeur.toString());
-                    cellule.appendChild(texte);
+            if (champ == "pilote1" || champ == "pilote2") {
+                let liste = document.createElement("select");    
+                cellule.appendChild(liste);
+                for (let pilote of pilotes) {
+                    let option = document.createElement("option");
+                    option.value = pilote;
+                    option.text = pilote;
+                    liste.appendChild(option);
                 }
+                liste.addEventListener("change", function () {alert(this.value);});
+                liste.value = valeur;
+
             }
-        });
+            let texte = document.createTextNode(valeur.toString());
+            cellule.appendChild(texte);
+        }
+    }
 }
 
 const CodeDecollage = {
@@ -113,7 +111,7 @@ async function premier_chargement_tableau(document) {
     let tableau = document.getElementById("tableau");
     var body_tableau = tableau.getElementsByTagName("tbody")[0];
     
-    await premier_chargement_des_ressources(document, tableau);    
+    await chargement_des_ressources(document, tableau);    
 }
     
 
@@ -126,6 +124,12 @@ document.addEventListener('DOMContentLoaded', (event) => {
     });
 });
 
-    
-
-    
+async function lire_json(adresse) {
+    return await fetch(adresse)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error("HTTP error" + response.status);
+            }
+            return response.json();
+        })
+}
