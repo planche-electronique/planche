@@ -38,8 +38,10 @@ async function chargement_des_ressources(document, tableau) {
                     option.text = pilote;
                     liste.appendChild(option);
                 }
-                liste.addEventListener("change", function () {alert(this.value);});
+                let numero_ogn = structuredClone(vol).numero_ogn;
+                                
                 liste.value = valeur;
+                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
 
             }
             let texte = document.createTextNode(valeur.toString());
@@ -132,4 +134,8 @@ async function lire_json(adresse) {
             }
             return response.json();
         })
+}
+
+function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
+    console.log(numero_ogn + champ + nouvelle_valeur);
 }
