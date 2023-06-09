@@ -1,8 +1,9 @@
+const adresse_serveur = 'http://127.0.0.1:7878'
 async function chargement_des_ressources(document, tableau) {
-    let immatriculations = fetch('http://127.0.0.1:7878/immatriculations.json').then(response => response.json());
+    let immatriculations = fetch(adresse_serveur+'/immatriculations.json').then(response => response.json());
         
-    let pilotes = await lire_json('http://127.0.0.1:7878/pilotes.json');
-    let vols = await lire_json('http://127.0.0.1:7878/vols.json');
+    let pilotes = await lire_json(adresse_serveur+'/pilotes.json');
+    let vols = await lire_json(adresse_serveur+'/vols.json');
     for (var vol of vols) {
         let ligne = tableau.insertRow();
         let heure_decollage = vol.decollage.slice(0, 2);
@@ -136,6 +137,21 @@ async function lire_json(adresse) {
         })
 }
 
-function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
-    console.log(numero_ogn + champ + nouvelle_valeur);
+async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
+    let corps = JSON.stringify({
+        "numero_ogn": numero_ogn,
+        "champ_mis_a_jour": champ,
+        "nouvelle_valeur": nouvelle_valeur
+    });
+    console.log(corps);
+    let length = corps.length;
+    await fetch(adresse_serveur+'/mise_a_jour', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'charset=utf-8',
+            'Access-Control-Allow-Origin': '*',
+            'Content-Length': length,
+        },
+        body: corps
+    })
 }
