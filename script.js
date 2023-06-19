@@ -1,6 +1,7 @@
 const adresse_serveur = 'http://127.0.0.1:7878'
+
 async function chargement_des_ressources(document, tableau) {
-    let immatriculations = fetch(adresse_serveur+'/immatriculations.json').then(response => response.json());
+    let immatriculations = await lire_json(adresse_serveur+'/immatriculations.json');
         
     let pilotes = await lire_json(adresse_serveur+'/pilotes.json');
     let vols = await lire_json(adresse_serveur+'/vols.json');
@@ -28,7 +29,6 @@ async function chargement_des_ressources(document, tableau) {
        //console.log(vol.temps_vol);
         for (const [champ, valeur] of Object.entries(vol)) {
             let cellule = ligne.insertCell();
-            typeof(pilotes);
                     
             if (champ == "pilote1" || champ == "pilote2") {
                 let liste = document.createElement("select");    
@@ -44,9 +44,25 @@ async function chargement_des_ressources(document, tableau) {
                 liste.value = valeur;
                 liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
 
+            } else if (champ == "aeronef") {
+                let liste = document.createElement("select");
+                cellule.appendChild(liste);
+                console.log(JSON.stringify(immatriculations));
+                for (let immatriculation of immatriculations) {
+                    let option = document.createElement("option");
+                    option.value = immatriculation;
+                    option.text = immatriculation;
+                    liste.appendChild(option);
+                }
+                let numero_ogn = structuredClone(vol).numero_ogn;
+                                
+                liste.value = valeur;
+                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
+                
+            } else {
+                let texte = document.createTextNode(valeur.toString());
+                cellule.appendChild(texte);
             }
-            let texte = document.createTextNode(valeur.toString());
-            cellule.appendChild(texte);
         }
     }
 }
@@ -69,8 +85,6 @@ async function premier_chargement_tableau(document) {
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");
-    console.log(code_pilote);
-    console.log(mot_de_passe);
             
             
         /*requete*/
