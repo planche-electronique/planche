@@ -1,12 +1,14 @@
 const adresse_serveur = 'http://127.0.0.1:7878'
 
-async function chargement_des_ressources(document, tableau) {
-    let immatriculations = await lire_json(adresse_serveur+'/immatriculations.json');
-        
-    let pilotes = await lire_json(adresse_serveur+'/pilotes.json');
-    let vols = await lire_json(adresse_serveur+'/vols.json');
+
+
+
+async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes) {
     for (var vol of vols) {
+
         let ligne = tableau.insertRow();
+
+        
         let heure_decollage = vol.decollage.slice(0, 2);
         let minute_decollage = vol.decollage.slice(3, 5);
         let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
@@ -47,7 +49,6 @@ async function chargement_des_ressources(document, tableau) {
             } else if (champ == "aeronef") {
                 let liste = document.createElement("select");
                 cellule.appendChild(liste);
-                console.log(JSON.stringify(immatriculations));
                 for (let immatriculation of immatriculations) {
                     let option = document.createElement("option");
                     option.value = immatriculation;
@@ -67,10 +68,16 @@ async function chargement_des_ressources(document, tableau) {
     }
 }
 
+
+
+
 const CodeDecollage = {
     T: "T",
     R: "R",
 };
+
+
+
     
 const CodeVol = {
     S: "S",
@@ -79,9 +86,11 @@ const CodeVol = {
     C: "C",
     M: "M",
 }
-    
 
-async function premier_chargement_tableau(document) {
+
+
+    
+async function premier_chargement_tableau(document, vols, immatriculations, pilotes){
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");
@@ -125,21 +134,38 @@ async function premier_chargement_tableau(document) {
                     
         </table>`);
             
-    let tableau = document.getElementById("tableau");
-    var body_tableau = tableau.getElementsByTagName("tbody")[0];
-    
-    await chargement_des_ressources(document, tableau);    
 }
-    
 
+
+
+
+async function maitre(document) {
     
-document.addEventListener('DOMContentLoaded', (event) => {
     let bouton = document.getElementById("bouton_soumission");
     
     bouton.addEventListener("click", (event) => {
-        premier_chargement_tableau(document);
+        sous_maitre(document);
     });
+}
+
+async function sous_maitre(document) {
+        
+    let immatriculations = await lire_json(adresse_serveur+'/immatriculations.json');    
+    let pilotes = await lire_json(adresse_serveur+'/pilotes.json');
+    
+    await premier_chargement_tableau(document);
+        
+    let tableau = document.getElementById("tableau");
+    mise_a_jour_automatique(document, tableau, immatriculations, pilotes);
+}
+    
+    
+document.addEventListener('DOMContentLoaded', (event) => {
+    maitre(document);
 });
+
+
+
 
 async function lire_json(adresse) {
     return await fetch(adresse)
@@ -150,6 +176,9 @@ async function lire_json(adresse) {
             return response.json();
         })
 }
+
+
+
 
 async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
     let corps = JSON.stringify({
@@ -166,4 +195,19 @@ async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
         },
         body: corps
     })
+}
+
+
+
+
+async function mise_a_jour_automatique(document, tableau, immatriculations, pilotes) {
+    
+    while(tableau.rows.length > 1) {
+        tableau.deleteRow(1);
+    }
+    let vols = await lire_json(adresse_serveur+'/vols.json');
+    chargement_des_ressources(document, tableau, vols, immatriculations, pilotes);
+    console.log("mise a jour1")
+    setTimeout(await (mise_a_jour_automatique(document, tableau, immatriculations, pilotes)), 4000);
+    console.log("mise a jour");
 }
