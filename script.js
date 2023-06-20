@@ -45,9 +45,9 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
                 select_generique(champ, valeur, machines_decollage, cellule, vol);
             } else if (champ == "decolleur") {
                 let liste = [];
-                if (vol["machine_decollgae"] == "T") {
+                if (vol["code_decollage"] == "T") {
                     liste = await lire_json(adresse_serveur+'/pilotes_tr.json');
-                } else if (vol["machine_decollgae"] == "R") {
+                } else if (vol["code_decollage"] == "R") {
                     liste = await lire_json(adresse_serveur+'/pilotes_rq.json');
                 }
                 select_generique(champ, valeur, liste, cellule, vol);
