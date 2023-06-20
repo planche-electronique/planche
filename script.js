@@ -39,7 +39,19 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
             } else if (champ == "code_vol") {
                 select_generique(champ, valeur, CodeVol, cellule, vol);              
             } else if (champ == "code_decollage") {
-                select_generique(champ, valeur, CodeDecollage, cellule, vol);             
+                select_generique(champ, valeur, CodeDecollage, cellule, vol);
+            } else if (champ == "machine_decollage"){
+                let machines_decollage = await lire_json(adresse_serveur+'/machines_decollages.json');
+                select_generique(champ, valeur, machines_decollage, cellule, vol);
+            } else if (champ == "decolleur") {
+                let liste = [];
+                if (vol["machine_decollgae"] == "T") {
+                    liste = await lire_json(adresse_serveur+'/pilotes_tr.json');
+                } else if (vol["machine_decollgae"] == "R") {
+                    liste = await lire_json(adresse_serveur+'/pilotes_rq.json');
+                }
+                select_generique(champ, valeur, liste, cellule, vol);
+                
             } else {
                 let texte = document.createTextNode(valeur.toString());
                 cellule.appendChild(texte);
