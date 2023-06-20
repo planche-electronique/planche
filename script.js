@@ -99,8 +99,6 @@ async function premier_chargement_tableau(document, vols, immatriculations, pilo
         /*requete*/
     let formulaire = document.getElementById("formulaire de connexion");
     formulaire.remove();
-    let planche = [];
-    let ligne = new Object();
     
     
             
@@ -143,7 +141,7 @@ async function maitre(document) {
     
     let bouton = document.getElementById("bouton_soumission");
     
-    bouton.addEventListener("click", (event) => {
+    bouton.addEventListener("click", () => {
         sous_maitre(document);
     });
 }
@@ -160,7 +158,7 @@ async function sous_maitre(document) {
 }
     
     
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', (_) => {
     maitre(document);
 });
 
@@ -206,8 +204,11 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
         tableau.deleteRow(1);
     }
     let vols = await lire_json(adresse_serveur+'/vols.json');
-    chargement_des_ressources(document, tableau, vols, immatriculations, pilotes);
-    console.log("mise a jour1")
-    setTimeout(await (mise_a_jour_automatique(document, tableau, immatriculations, pilotes)), 4000);
-    console.log("mise a jour");
+    await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes);
+    setTimeout(
+        function() {
+            mise_a_jour_automatique(document, tableau, immatriculations, pilotes);
+        },
+        77777
+    );
 }
