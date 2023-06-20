@@ -3,12 +3,38 @@ const adresse_serveur = 'http://127.0.0.1:7878'
 
 
 
-async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes) {
+async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
     for (var vol of vols) {
 
         let ligne = tableau.insertRow();
-
         
+        //numero_ogn
+        texte_tableau_generique(document, ligne, structuredClone(vol).numero_ogn);
+        //code de decollage
+        select_generique("code_decollage", vol["code_decollage"], CodeDecollage, ligne, vol);
+        // machine de decollage
+        select_generique("machine_decollage", vol["machine_decollage"], machines_decollage, ligne, vol);
+        //pilote qui a fait decoller
+        let pilotes_decollage = [];
+        if (vol["code_decollage"] == "T") {
+            pilotes_decollage = pilotes_tr;
+        } else if (vol["code_decollage"] == "R") {
+            pilotes_decollage = pilotes_rq;
+        }
+        select_generique("decolleur", vol["decolleur"], pilotes_decollage, ligne, vol);
+        //immatriculation
+        select_generique("aeronef", vol["aeronef"], immatriculations, ligne, vol);
+        //code vol
+        select_generique("code_vol", vol["code_vol"], CodeVol, ligne, vol);
+        // pilote 1 (cdb, instructeur...)
+        select_generique("pilote1", vol["pilote1"], pilotes, ligne, vol);
+        // pilote 2 (eleve, passager...)
+        select_generique("pilote2", vol["pilote2"], pilotes, ligne, vol);
+        //heure de decollage
+        texte_tableau_generique(document, ligne, structuredClone(vol).decollage);
+        //heure d'atterissage
+        texte_tableau_generique(document, ligne, structuredClone(vol).atterissage);
+        //hdv
         let heure_decollage = vol.decollage.slice(0, 2);
         let minute_decollage = vol.decollage.slice(3, 5);
         let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
@@ -28,35 +54,7 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
                 
                     
         vol.temps_vol = heures + ":" + minutes;
-       //console.log(vol.temps_vol);
-        for (const [champ, valeur] of Object.entries(vol)) {
-            let cellule = ligne.insertCell();
-                    
-            if (champ == "pilote1" || champ == "pilote2") {
-                select_generique(champ, valeur, pilotes, cellule, vol);
-            } else if (champ == "aeronef") {
-                select_generique(champ, valeur, immatriculations, cellule, vol);                
-            } else if (champ == "code_vol") {
-                select_generique(champ, valeur, CodeVol, cellule, vol);              
-            } else if (champ == "code_decollage") {
-                select_generique(champ, valeur, CodeDecollage, cellule, vol);
-            } else if (champ == "machine_decollage"){
-                let machines_decollage = await lire_json(adresse_serveur+'/machines_decollages.json');
-                select_generique(champ, valeur, machines_decollage, cellule, vol);
-            } else if (champ == "decolleur") {
-                let liste = [];
-                if (vol["code_decollage"] == "T") {
-                    liste = await lire_json(adresse_serveur+'/pilotes_tr.json');
-                } else if (vol["code_decollage"] == "R") {
-                    liste = await lire_json(adresse_serveur+'/pilotes_rq.json');
-                }
-                select_generique(champ, valeur, liste, cellule, vol);
-                
-            } else {
-                let texte = document.createTextNode(valeur.toString());
-                cellule.appendChild(texte);
-            }
-        }
+        texte_tableau_generique(document, ligne, structuredClone(vol).temps_vol);
     }
 }
 
@@ -140,13 +138,16 @@ async function maitre(document) {
 
 async function sous_maitre(document) {
         
-    let immatriculations = await lire_json(adresse_serveur+'/immatriculations.json');    
-    let pilotes = await lire_json(adresse_serveur+'/pilotes.json');
-    
+    let immatriculations   = await lire_json(adresse_serveur+'/immatriculations.json');    
+    let pilotes            = await lire_json(adresse_serveur+'/pilotes.json');
+    let machines_decollage = await lire_json(adresse_serveur+'/machines_decollages.json');
+    let pilotes_tr         = await lire_json(adresse_serveur+'/pilotes_tr.json')
+    let pilotes_rq         = await lire_json(adresse_serveur+'/pilotes_rq.json')
+
     await premier_chargement_tableau(document);
         
     let tableau = document.getElementById("tableau");
-    mise_a_jour_automatique(document, tableau, immatriculations, pilotes);
+    mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
 }
     
     
@@ -190,16 +191,16 @@ async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
 
 
 
-async function mise_a_jour_automatique(document, tableau, immatriculations, pilotes) {
+async function mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
     
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
     }
     let vols = await lire_json(adresse_serveur+'/vols.json');
-    await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes);
+    await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
     setTimeout(
         function() {
-            mise_a_jour_automatique(document, tableau, immatriculations, pilotes);
+            mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
         },
         77777
     );
@@ -208,7 +209,9 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
 
 
 //fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
-function select_generique(champ, valeur, liste_elements, cellule, vol) {   
+function select_generique(champ, valeur, liste_elements, ligne, vol) {
+       
+    let cellule = ligne.insertCell();
     let liste = document.createElement("select");
     cellule.appendChild(liste);
     for (let element of liste_elements) {
@@ -222,4 +225,13 @@ function select_generique(champ, valeur, liste_elements, cellule, vol) {
     liste.value = valeur;
     liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
                 
+}
+
+
+
+
+function texte_tableau_generique(document, ligne, texte) {
+    let celulle = ligne.insertCell();
+    let texte_node = document.createTextNode(texte)
+    celulle.appendChild(texte_node);
 }
