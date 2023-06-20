@@ -252,15 +252,22 @@ function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decol
     entree_heure.name = "une entree d'heure";
     // if ((champ_heure != "decollage") || ())
     entree_heure.addEventListener("change", function() {
-        if (!((champ_heure == decollage) && (atterissage < temps_texte_vers_heure_type(this.value)))) {
-           requete_mise_a_jour(numero_ogn, champ_heure, this.value);
-        } else {
-            alert("Le decollage ne peut pas etre plus tard que l'atterissage !");
-        }
-        if (!((champ_heure == atterissage) && (decollage > temps_texte_vers_heure_type(this.value)))) {
-            requete_mise_a_jour(numero_ogn, champ_heure, this.value);
-        } else {
+        // console.log("attero : " + atterissage);
+        // console.log("deco : "+  decollage);
+        // console.log(temps_texte_vers_heure_type(this.value));
+
+        
+        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(this.value))) {
+            alert("Le décollage ne peut pas etre plus tard que l'atterissage !");
+            
+        } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(this.value))) {
             alert("L'atterissage ne peut pas être plus tôt que le décollage !");
+            
+        } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(this.value))) {
+            requete_mise_a_jour(numero_ogn, champ_heure, this.value);            
+            
+        } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(this.value))) {
+            requete_mise_a_jour(numero_ogn, champ_heure, this.value);
         }
     });
 }
