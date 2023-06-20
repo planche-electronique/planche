@@ -33,62 +33,13 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
             let cellule = ligne.insertCell();
                     
             if (champ == "pilote1" || champ == "pilote2") {
-                let liste = document.createElement("select");    
-                cellule.appendChild(liste);
-                for (let pilote of pilotes) {
-                    let option = document.createElement("option");
-                    option.value = pilote;
-                    option.text = pilote;
-                    liste.appendChild(option);
-                }
-                let numero_ogn = structuredClone(vol).numero_ogn;
-                                
-                liste.value = valeur;
-                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
-
+                select_generique(champ, valeur, pilotes, cellule, vol);
             } else if (champ == "aeronef") {
-                let liste = document.createElement("select");
-                cellule.appendChild(liste);
-                for (let immatriculation of immatriculations) {
-                    let option = document.createElement("option");
-                    option.value = immatriculation;
-                    option.text = immatriculation;
-                    liste.appendChild(option);
-                }
-                let numero_ogn = structuredClone(vol).numero_ogn;
-                                
-                liste.value = valeur;
-                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
-                
+                select_generique(champ, valeur, immatriculations, cellule, vol);                
             } else if (champ == "code_vol") {
-                let liste = document.createElement("select");
-                cellule.appendChild(liste);
-                for (let code_vol of CodeVol) {
-                    let option = document.createElement("option");
-                    option.value = code_vol;
-                    option.text = code_vol;
-                    liste.appendChild(option);
-                }
-                let numero_ogn = structuredClone(vol).numero_ogn;
-                                
-                liste.value = valeur;
-                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
-                
-             } else if (champ == "code_decollage") {
-                let liste = document.createElement("select");
-                cellule.appendChild(liste);
-                for (let code_decollage of CodeDecollage) {
-                    let option = document.createElement("option");
-                    option.value = code_decollage;
-                    option.text = code_decollage;
-                    liste.appendChild(option);
-                }
-                let numero_ogn = structuredClone(decollage).numero_ogn;
-                                
-                liste.value = valeur;
-                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
-                
-                             
+                select_generique(champ, valeur, CodeVol, cellule, vol);              
+            } else if (champ == "code_decollage") {
+                select_generique(champ, valeur, CodeDecollage, cellule, vol);             
             } else {
                 let texte = document.createTextNode(valeur.toString());
                 cellule.appendChild(texte);
@@ -240,4 +191,23 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
         },
         77777
     );
+}
+
+
+
+//fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
+function select_generique(champ, valeur, liste_elements, cellule, vol) {   
+    let liste = document.createElement("select");
+    cellule.appendChild(liste);
+    for (let element of liste_elements) {
+        let option = document.createElement("option");
+        option.value = element;
+        option.text = element;
+        liste.appendChild(option);
+    }
+    let numero_ogn = structuredClone(vol).numero_ogn;
+                    
+    liste.value = valeur;
+    liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
+                
 }
