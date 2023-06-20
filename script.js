@@ -60,6 +60,35 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
                 liste.value = valeur;
                 liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
                 
+            } else if (champ == "code_vol") {
+                let liste = document.createElement("select");
+                cellule.appendChild(liste);
+                for (let code_vol of CodeVol) {
+                    let option = document.createElement("option");
+                    option.value = code_vol;
+                    option.text = code_vol;
+                    liste.appendChild(option);
+                }
+                let numero_ogn = structuredClone(vol).numero_ogn;
+                                
+                liste.value = valeur;
+                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
+                
+             } else if (champ == "code_decollage") {
+                let liste = document.createElement("select");
+                cellule.appendChild(liste);
+                for (let code_decollage of CodeDecollage) {
+                    let option = document.createElement("option");
+                    option.value = code_decollage;
+                    option.text = code_decollage;
+                    liste.appendChild(option);
+                }
+                let numero_ogn = structuredClone(decollage).numero_ogn;
+                                
+                liste.value = valeur;
+                liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
+                
+                             
             } else {
                 let texte = document.createTextNode(valeur.toString());
                 cellule.appendChild(texte);
@@ -71,21 +100,21 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
 
 
 
-const CodeDecollage = {
-    T: "T",
-    R: "R",
-};
+const CodeDecollage = [
+    "T",
+    "R",
+];
 
 
 
     
-const CodeVol = {
-    S: "S",
-    E: "E",
-    B: "B",
-    C: "C",
-    M: "M",
-}
+const CodeVol = [
+    "S",
+    "E",
+    "B",
+    "C",
+    "M",
+]
 
 
 
