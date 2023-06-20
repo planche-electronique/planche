@@ -30,19 +30,17 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
         select_generique("pilote1", vol["pilote1"], pilotes, ligne, vol);
         // pilote 2 (eleve, passager...)
         select_generique("pilote2", vol["pilote2"], pilotes, ligne, vol);
+
+        let decollage = temps_texte_vers_heure_type(vol.decollage);
+        let atterissage = temps_texte_vers_heure_type(vol.atterissage);
+
         //heure de decollage
-        texte_tableau_generique(document, ligne, structuredClone(vol).decollage);
+        heure_tableau_generique(document, ligne, vol, "decollage", structuredClone(vol).decollage, decollage, atterissage);
         //heure d'atterissage
-        texte_tableau_generique(document, ligne, structuredClone(vol).atterissage);
-        //hdv
-        let heure_decollage = vol.decollage.slice(0, 2);
-        let minute_decollage = vol.decollage.slice(3, 5);
-        let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
-
-        let heure_atterissage= vol.atterissage.slice(0, 2);
-        let minute_atterissage = vol.atterissage.slice(3, 5);
-        let atterissage = new Date(0, 0, 0, heure_atterissage, minute_atterissage);
-
+        
+        heure_tableau_generique(document, ligne, vol, "atterissage", structuredClone(vol).atterissage, decollage, atterissage);
+        //hdv       
+        
         let temps_vol = atterissage - decollage;
         let heures = Math.floor(temps_vol / 3600000).toString();
         let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
@@ -220,9 +218,9 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
         option.text = element;
         liste.appendChild(option);
     }
-    let numero_ogn = structuredClone(vol).numero_ogn;
-                    
     liste.value = valeur;
+    
+    let numero_ogn = structuredClone(vol).numero_ogn;
     liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
                 
 }
@@ -234,4 +232,45 @@ function texte_tableau_generique(document, ligne, texte) {
     let celulle = ligne.insertCell();
     let texte_node = document.createTextNode(texte)
     celulle.appendChild(texte_node);
+}
+
+
+
+
+function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decollage, atterissage) {
+    
+    let numero_ogn = structuredClone(vol).numero_ogn;
+    
+    let cellule = ligne.insertCell();
+    let label = document.createElement("label");
+    cellule.appendChild(label);
+    label.for = heure + numero_ogn;
+    let entree_heure = document.createElement("input");
+    cellule.appendChild(entree_heure);
+    entree_heure.type = "time";
+    entree_heure.value = heure;
+    entree_heure.name = "une entree d'heure";
+    // if ((champ_heure != "decollage") || ())
+    entree_heure.addEventListener("change", function() {
+        if (!((champ_heure == decollage) && (atterissage < temps_texte_vers_heure_type(this.value)))) {
+           requete_mise_a_jour(numero_ogn, champ_heure, this.value);
+        } else {
+            alert("Le decollage ne peut pas etre plus tard que l'atterissage !");
+        }
+        if (!((champ_heure == atterissage) && (decollage > temps_texte_vers_heure_type(this.value)))) {
+            requete_mise_a_jour(numero_ogn, champ_heure, this.value);
+        } else {
+            alert("L'atterissage ne peut pas être plus tôt que le décollage !");
+        }
+    });
+}
+
+
+
+
+function temps_texte_vers_heure_type(temps) {
+    let heure_decollage = temps.slice(0, 2);
+    let minute_decollage = temps.slice(3, 5);
+    let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
+    return decollage;
 }
