@@ -247,27 +247,31 @@ function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decol
     label.for = heure + numero_ogn;
     let entree_heure = document.createElement("input");
     cellule.appendChild(entree_heure);
+    let bouton_envoi = document.createElement("input");
+    cellule.appendChild(bouton_envoi);
     entree_heure.type = "time";
     entree_heure.value = heure;
     entree_heure.name = "une entree d'heure";
+    bouton_envoi.type = "button";
+    bouton_envoi.value = "Enregistrer";
     // if ((champ_heure != "decollage") || ())
-    entree_heure.addEventListener("change", function() {
+    bouton_envoi.addEventListener("click", function() {
         // console.log("attero : " + atterissage);
         // console.log("deco : "+  decollage);
         // console.log(temps_texte_vers_heure_type(this.value));
 
         
-        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(this.value))) {
+        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value))) {
             alert("Le décollage ne peut pas etre plus tard que l'atterissage !");
             
-        } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(this.value))) {
+        } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(entree_heure.value))) {
             alert("L'atterissage ne peut pas être plus tôt que le décollage !");
             
-        } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(this.value))) {
-            requete_mise_a_jour(numero_ogn, champ_heure, this.value);            
+        } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(entree_heure.value))) {
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);            
             
-        } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(this.value))) {
-            requete_mise_a_jour(numero_ogn, champ_heure, this.value);
+        } else if ((champ_heure == "atterissage") && (decollage < temps_texte_vers_heure_type(entree_heure.value))) {
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
         }
     });
 }
