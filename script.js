@@ -9,7 +9,7 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
         let ligne = tableau.insertRow();
         
         //numero_ogn
-        texte_tableau_generique(document, ligne, structuredClone(vol).numero_ogn);
+        texte_tableau_generique(document, ligne, structuredClone(vol).numero_ogn, "numero_ogn", vol);
         //code de decollage
         select_generique("code_decollage", vol["code_decollage"], CodeDecollage, ligne, vol);
         // machine de decollage
@@ -52,7 +52,7 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
                 
                     
         vol.temps_vol = heures + ":" + minutes;
-        texte_tableau_generique(document, ligne, structuredClone(vol).temps_vol);
+        texte_tableau_generique(document, ligne, structuredClone(vol).temps_vol, "temps_vol", vol);
     }
 }
 
@@ -228,10 +228,11 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
 
 
 
-function texte_tableau_generique(document, ligne, texte) {
+function texte_tableau_generique(document, ligne, texte, champ, vol) {
     let celulle = ligne.insertCell();
     let texte_node = document.createTextNode(texte)
     celulle.appendChild(texte_node);
+    texte_node.id = structuredClone(vol).umero_ogn + champ;
 }
 
 
