@@ -50,7 +50,6 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
             minutes = minutes.toString();
         }
                 
-                    
         vol.temps_vol = heures + ":" + minutes;
         texte_tableau_generique(document, ligne, structuredClone(vol).temps_vol, "temps_vol", vol);
     }
@@ -258,13 +257,8 @@ function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decol
     entree_heure.name = "une entree d'heure";
     bouton_envoi.type = "button";
     bouton_envoi.value = "Enregistrer";
-    // if ((champ_heure != "decollage") || ())
     bouton_envoi.addEventListener("click", function() {
-        // console.log("attero : " + atterissage);
-        // console.log("deco : "+  decollage);
-        // console.log(temps_texte_vers_heure_type(this.value));
 
-        
         if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value))) {
             alert("Le décollage ne peut pas etre plus tard que l'atterissage !");
             
@@ -272,7 +266,12 @@ function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decol
             alert("L'atterissage ne peut pas être plus tôt que le décollage !");
             
         } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(entree_heure.value))) {
-            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);            
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
+            let temps_vol = atterissage - temps_texte_vers_heure_type(entree_heure.value);
+            let temps_vol_texte = temps_type_vers_temps_texte(temps_vol);
+            let paragraphe = document.getElementById(numero_ogn + "temps_vol");
+            paragraphe.innerHTML = temps_vol_texte;
+            
             
         } else if ((champ_heure == "atterissage") && (decollage < temps_texte_vers_heure_type(entree_heure.value))) {
             requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
@@ -288,4 +287,19 @@ function temps_texte_vers_heure_type(temps) {
     let minute_decollage = temps.slice(3, 5);
     let decollage = new Date(0, 0, 0, heure_decollage, minute_decollage);
     return decollage;
+}
+
+
+
+
+function temps_type_vers_temps_texte(temps_type) {
+        let heures = Math.floor(temps_type / 3600000).toString();
+        let minutes = Math.floor((temps_type-heures*3600000) / 60000);
+        if (minutes < 10) {
+            minutes = "0" + minutes.toString();
+        } else {
+            minutes = minutes.toString();
+        }
+        console.log(heures + ":" + minutes);
+        return (heures + ":" + minutes);
 }
