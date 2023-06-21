@@ -236,7 +236,6 @@ function texte_tableau_generique(document, ligne, texte, champ, vol) {
     cellule.appendChild(paragraphe);
     paragraphe.id = structuredClone(vol).numero_ogn + champ; // id usefull for changing and recalculating time when updating takeoff time
     paragraphe.className += "paragraphe_texte_tableau";
-    console.log(paragraphe.value);
 }
 
 
