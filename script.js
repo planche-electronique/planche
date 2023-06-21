@@ -230,10 +230,13 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
 
 function texte_tableau_generique(document, ligne, texte, champ, vol) {
     let cellule = ligne.insertCell();
-    let texte_node = document.createTextNode(texte)
-    cellule.appendChild(texte_node);
-    cellule.setAttribute("id",structuredClone(vol).numero_ogn + champ); // id usefull for changing and recalculating time when updating takeoff time
-    console.log(cellule.value);
+    // let texte_node = document.createTextNode(texte)
+    let paragraphe = document.createElement("p");
+    paragraphe.textContent = texte;
+    cellule.appendChild(paragraphe);
+    paragraphe.id = structuredClone(vol).numero_ogn + champ; // id usefull for changing and recalculating time when updating takeoff time
+    paragraphe.className += "paragraphe_texte_tableau";
+    console.log(paragraphe.value);
 }
 
 

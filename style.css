@@ -61,3 +61,8 @@ table {
 td {
     text-align: center;
 }
+
+.paragraphe_texte_tableau {
+    margin: 0;
+    padding : 0;
+}
