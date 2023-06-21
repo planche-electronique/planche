@@ -229,10 +229,11 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
 
 
 function texte_tableau_generique(document, ligne, texte, champ, vol) {
-    let celulle = ligne.insertCell();
+    let cellule = ligne.insertCell();
     let texte_node = document.createTextNode(texte)
-    celulle.appendChild(texte_node);
-    texte_node.id = structuredClone(vol).umero_ogn + champ;
+    cellule.appendChild(texte_node);
+    cellule.setAttribute("id",structuredClone(vol).numero_ogn + champ); // id usefull for changing and recalculating time when updating takeoff time
+    console.log(cellule.value);
 }
 
 
