@@ -91,12 +91,16 @@ async function premier_chargement_tableau(document, vols, immatriculations, pilo
             
     /*ajoute le tableau*/
     let ul = document.createElement("ul");
+    ul.className += "menu";
     body.appendChild(ul);
     let li = document.createElement("li");
+    li.className.id = "date_menu";
+    let a =document.createElement("a");
     let entree_date = document.createElement("input");
     entree_date.type = "date";
     entree_date.id = "selecteur_date";
-    li.appendChild(entree_date);
+    a.appendChild(entree_date);
+    li.appendChild(a);
     ul.appendChild(li);
     entree_date.addEventListener("change", function () { recharger(entree_date.value);});
     
@@ -112,12 +116,13 @@ async function premier_chargement_tableau(document, vols, immatriculations, pilo
     let colonnes = [
         "Ligne", "Code de décollage", "Avec", "Par", "Immatriculation", "Code vol", "Commandant de bord ou Instructeur", "Pilote 2 ou élève", "Heure de décollage", "Heure d'atterissage", "Temps de vol"
     ];
-    let th = document.createElement("th");
-    for (let titre in colonnes) {
-        th = document.createElement("th");
-        th.value = titre;
+    for (let titre of colonnes) {
+        let th = document.createElement("th");
+        th.textContent = titre;
         tr.appendChild(th);
     }
+    tableau.appendChild(thead);
+    
     let tbody = document.createElement("tbody");
     tbody.id = "body_tableau";
     tableau_html.appendChild(tbody);       
@@ -195,7 +200,8 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
     }
-    let vols = await lire_json(adresse_serveur+'/vols.json');
+    let planche = await lire_json(adresse_serveur+'/vols/2023/04/25');
+    let vols = planche.vols;
     await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
     setTimeout(
         function() {
