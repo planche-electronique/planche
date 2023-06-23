@@ -77,7 +77,7 @@ const CodeVol = [
 
 
     
-async function premier_chargement_tableau(document, vols, immatriculations, pilotes){
+async function premier_chargement_tableau(document, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");
@@ -102,7 +102,21 @@ async function premier_chargement_tableau(document, vols, immatriculations, pilo
     a.appendChild(entree_date);
     li.appendChild(a);
     ul.appendChild(li);
-    entree_date.addEventListener("change", function () { recharger(entree_date.value);});
+    entree_date.addEventListener(
+        "change",
+        function () { 
+            recharger(
+                document,
+                entree_date.value,
+                tableau,
+                immatriculations,
+                pilotes,
+                pilotes_tr,
+                pilotes_rq,
+                machines_decollage
+            );
+        }
+    );
     
     let tableau_html = document.createElement("table");
     tableau_html.id = "tableau";
@@ -148,7 +162,14 @@ async function sous_maitre(document) {
     let pilotes_tr         = await lire_json(adresse_serveur+'/pilotes_tr.json')
     let pilotes_rq         = await lire_json(adresse_serveur+'/pilotes_rq.json')
 
-    await premier_chargement_tableau(document);
+    await premier_chargement_tableau(
+        document,
+        immatriculations,
+        pilotes,
+        pilotes_tr,
+        pilotes_rq,
+        machines_decollage
+    );
         
     let tableau = document.getElementById("tableau");
     mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
@@ -170,6 +191,14 @@ async function lire_json(adresse) {
             }
             return response.json();
         })
+}
+
+
+
+
+async function vols_du(date_format_slash) {
+    let adresse = adresse_serveur + "/vols/" + date_format_slash;
+    return await lire_json(adresse);
 }
 
 
@@ -210,6 +239,37 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
         77777
     );
 }
+
+
+
+
+async function recharger(
+    document,
+    date_format_tirets,
+    tableau,
+    immatriculations,
+    pilotes,
+    pilotes_tr,
+    pilotes_rq,
+    machines_decollage
+) {
+    let annee = date_format_tirets.slice(0, 4);
+    let mois = date_format_tirets.slice(5, 7);
+    let jour = date_format_tirets.slice(8, 10);
+    let date_format_slash = annee + "/" + mois + "/" + jour;
+    let vols = await vols_du(date_format_slash);
+    await chargement_des_ressources(
+        document,
+        tableau,
+        vols,
+        immatriculations,
+        pilotes,
+        pilotes_tr,
+        pilotes_rq,
+        machines_decollage
+    );
+}
+
 
 
 
@@ -311,3 +371,6 @@ function temps_type_vers_temps_texte(temps_type) {
         console.log(heures + ":" + minutes);
         return (heures + ":" + minutes);
 }
+
+
+
