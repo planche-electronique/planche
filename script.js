@@ -99,7 +99,7 @@ async function premier_chargement_tableau(document, immatriculations, pilotes, p
     let entree_date = document.createElement("input");
     entree_date.type = "date";
     entree_date.value = "2023-04-25";
-    entree_date.id = "selecteur_date";
+    entree_date.id = "entree_date";
     a.appendChild(entree_date);
     li.appendChild(a);
     ul.appendChild(li);
@@ -199,7 +199,8 @@ async function lire_json(adresse) {
 
 async function vols_du(date_format_slash) {
     let adresse = adresse_serveur + "/vols/" + date_format_slash;
-    return await lire_json(adresse);
+    let planche = await lire_json(adresse);
+    return planche.vols;
 }
 
 
@@ -230,8 +231,10 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
     }
-    let planche = await lire_json(adresse_serveur+'/vols/2023/04/25');
-    let vols = planche.vols;
+
+    let entree_date = document.getElementById("entree_date");
+    let date = entree_date.value;
+    let vols = await vols_du(date.replaceAll("-", "/"));
     await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
     setTimeout(
         function() {
@@ -254,11 +257,8 @@ async function recharger(
     pilotes_rq,
     machines_decollage
 ) {
-    let annee = date_format_tirets.slice(0, 4);
-    let mois = date_format_tirets.slice(5, 7);
-    let jour = date_format_tirets.slice(8, 10);
-    let date_format_slash = annee + "/" + mois + "/" + jour;
-    let vols = await vols_du(date_format_slash);
+
+    let vols = await vols_du(date_format_tirets.replaceAll("-", "/"));
     await chargement_des_ressources(
         document,
         tableau,
@@ -372,6 +372,7 @@ function temps_type_vers_temps_texte(temps_type) {
         console.log(heures + ":" + minutes);
         return (heures + ":" + minutes);
 }
+
 
 
 
