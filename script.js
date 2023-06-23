@@ -90,35 +90,37 @@ async function premier_chargement_tableau(document, vols, immatriculations, pilo
     
             
     /*ajoute le tableau*/
-    body.insertAdjacentHTML('beforeend',`<ul class="menu">
-            <li id="date_menu"><a><input type="date" id="date"></a></li>
-            <li class="text_menu"><a>Eplanche</a></li>
-            <li class="text_menu"><a>Affectation</a></li>
-        </ul>
-        <div>
-                    
-        </div>
-        <table id="tableau">
-            <thead class="ligne_info">
-                <tr>
-                    <th>Ligne</th>
-                    <th>Code de décollage</th>
-                    <th>Avec</th>
-                    <th>Par</th>
-                    <th>Immatriculation</th>
-                    <th>Code vol</th>
-                    <th>Commandant de bord ou instructeur</th>
-                    <th>Pilote 2 ou élève</th>
-                    <th>Heure de décollage</th>
-                    <th>Heure d'atterissage</th>
-                    <th> Durée du vol</th>
-                </tr>
-                </thead>
-            <tbody id="body_tableau"> 
-            </tbody>
-                    
-        </table>`);
-            
+    let ul = document.createElement("ul");
+    body.appendChild(ul);
+    let li = document.createElement("li");
+    let entree_date = document.createElement("input");
+    entree_date.type = "date";
+    entree_date.id = "selecteur_date";
+    li.appendChild(entree_date);
+    ul.appendChild(li);
+    entree_date.addEventListener("change", function () { recharger(entree_date.value);});
+    
+    let tableau_html = document.createElement("table");
+    tableau_html.id = "tableau";
+    body.appendChild(tableau_html);
+
+    let thead = document.createElement("thead");
+    thead.className += "ligne_info";
+
+    let tr = document.createElement("tr");
+    thead.appendChild(tr);
+    let colonnes = [
+        "Ligne", "Code de décollage", "Avec", "Par", "Immatriculation", "Code vol", "Commandant de bord ou Instructeur", "Pilote 2 ou élève", "Heure de décollage", "Heure d'atterissage", "Temps de vol"
+    ];
+    let th = document.createElement("th");
+    for (let titre in colonnes) {
+        th = document.createElement("th");
+        th.value = titre;
+        tr.appendChild(th);
+    }
+    let tbody = document.createElement("tbody");
+    tbody.id = "body_tableau";
+    tableau_html.appendChild(tbody);       
 }
 
 
