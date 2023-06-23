@@ -98,6 +98,7 @@ async function premier_chargement_tableau(document, immatriculations, pilotes, p
     let a =document.createElement("a");
     let entree_date = document.createElement("input");
     entree_date.type = "date";
+    entree_date.value = "2023-04-25";
     entree_date.id = "selecteur_date";
     a.appendChild(entree_date);
     li.appendChild(a);
