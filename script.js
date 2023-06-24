@@ -257,7 +257,10 @@ async function recharger(
     pilotes_rq,
     machines_decollage
 ) {
-
+    
+    while(tableau.rows.length > 1) {
+        tableau.deleteRow(1);
+    }
     let vols = await vols_du(date_format_tirets.replaceAll("-", "/"));
     await chargement_des_ressources(
         document,
