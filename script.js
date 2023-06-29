@@ -300,6 +300,28 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
     let numero_ogn = structuredClone(vol).numero_ogn;
     liste.value = valeur;
     liste.id = champ + numero_ogn;
+
+    if (champ == "code_vol") {
+        liste.addEventListener("change", function() {
+            let select_machines_decollage = document.getElementById("machine_decollage" + numero_ogn);
+            let select_pilotes_machine_decollage = document.getElementById("decolleur" + numero_ogn);
+            if (this.value == "T") {
+                while (select_machines_decollage.lastChild) {
+                    select_machines_decollage.removeChild(select_machines_decollage.lastChild);
+                    //on a enlevé les enfants de la liste                   
+                }
+                for (let element of treuils) {
+                    let option = document.createElement("option");
+                    option.value = element;
+                    option.text = element;
+                    select_machines_decollage.appendChild(option);
+                }
+            } else {
+                
+            }
+            
+        })
+    }
     
     liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
                 
