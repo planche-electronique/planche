@@ -1,3 +1,17 @@
+/*
+    Planche-électronique - projet de système d'enregistrement de vols en planeur pour clubs de vol à voile
+    
+    elements_html.js
+        fionctions qui permettent de créer des éléments html avec des parametres que l'on retrouve souvent lors de l'ecriture d'une planche
+    
+    Licensed under the MIT licence, provided 'as is' without any warranty.
+    Soumis à la licence MIT, fourni 'en l'état' sans aucune garantie.
+    Voir https://raw.githubusercontent.com/planche-electronique/planche/master/LICENSE pour la licence complète
+*/
+
+
+
+
 //fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
 function select_generique(champ, valeur, liste_elements, ligne, vol) {
        

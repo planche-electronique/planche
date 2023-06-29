@@ -1,3 +1,16 @@
+/*
+    Planche-électronique - projet de système d'enregistrement de vols en planeur pour clubs de vol à voile
+    
+    main.js
+            fichier principal qui s'occupe de la gestion du site internet de planche électronique qui permet
+        de logger des vols en planeur
+    
+    Licensed under the MIT licence, provided 'as is' without any warranty.
+    Soumis à la licence MIT, fourni 'en l'état' sans aucune garantie.
+    Voir https://raw.githubusercontent.com/planche-electronique/planche/master/LICENSE pour la licence complète
+*/
+
+
 
 
 const adresse_serveur = 'http://127.0.0.1:7878'
