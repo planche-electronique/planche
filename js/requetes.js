@@ -27,8 +27,7 @@ async function lire_json(adresse) {
 
 async function vols_du(date_format_slash) {
     let adresse = adresse_serveur + "/vols/" + date_format_slash;
-    let planche = await lire_json(adresse);
-    return planche.vols;
+    return await lire_json(adresse);
 }
 
 
