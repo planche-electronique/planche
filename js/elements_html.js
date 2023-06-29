@@ -14,6 +14,7 @@
 
 //fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
 function select_generique(champ, valeur, ligne, vol, infos_fixes) {
+    let liste_elements;
     if (champ == "machine_decollage") {
         if (vol["code_decollage"] == "T") {
             liste_elements = infos_fixes["treuils"];
@@ -24,8 +25,16 @@ function select_generique(champ, valeur, ligne, vol, infos_fixes) {
         if (vol["code_decollage"] == "T") {
             liste_elements = infos_fixes["pilotes_tr"];
         } else if (vol["code_decollage"] == "R") {
-            liste_elements = ["pilotes_rq"];
+            liste_elements = infos_fixes["pilotes_rq"];
         }   
+    } else if (champ == "pilote1" || champ == "pilote2") {
+        liste_elements = infos_fixes["pilotes"];
+    } else if (champ == "code_decollage") {
+        liste_elements = infos_fixes["CodeDecollage"];
+    } else if (champ == "code_vol") {
+        liste_elements = infos_fixes["CodeVol"];
+    } else if (champ == "aeronef") {
+        liste_elements = infos_fixes["immatriculations"];
     }
 
     let cellule = ligne.insertCell();

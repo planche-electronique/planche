@@ -12,25 +12,6 @@
 
 
 
-const CodeDecollage = [
-    "T",
-    "R",
-];
-
-
-
-    
-const CodeVol = [
-    "B",
-    "S",
-    "E",
-    "C",
-    "M",
-]
-
-
-
-
 async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
     let numero_vol_planeur = 0;
     for (var vol of vols) {

@@ -36,13 +36,29 @@ async function sous_maitre(document) {
     let pilotes_tr       = await lire_json(adresse_serveur+'/pilotes_tr.json');
     let pilotes_rq       = await lire_json(adresse_serveur+'/pilotes_rq.json');
 
+    const CodeDecollage = [
+        "T",
+        "R",
+    ];
+    
+    const CodeVol = [
+        "B",
+        "S",
+        "E",
+        "C",
+        "M",
+    ]
+
+
     let infos_fixes = {
         "immatriculations": immatriculations,
         "pilotes": pilotes,
         "treuils": treuils,
         "remorqueurs": remorqueurs,
         "pilotes_tr": pilotes_tr,
-        "pilotes_rq": pilotes_rq
+        "pilotes_rq": pilotes_rq,
+        "CodeDecollage": CodeDecollage,
+        "CodeVol": CodeVol
     }
 
     await premier_chargement_tableau(
