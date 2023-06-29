@@ -50,7 +50,7 @@ function select_generique(champ, valeur, ligne, vol, infos_fixes) {
     liste.value = valeur;
     liste.id = champ + numero_ogn;
 
-    if (champ == "code_vol") {
+    if (champ == "code_decollage") {
         liste.addEventListener("change", function() {
             let select_machines_decollage = document.getElementById("machine_decollage" + numero_ogn);
             let select_pilotes_machine_decollage = document.getElementById("decolleur" + numero_ogn);
@@ -65,12 +65,34 @@ function select_generique(champ, valeur, ligne, vol, infos_fixes) {
                     option.text = element;
                     select_machines_decollage.appendChild(option);
                 }
+
+                while (select_pilotes_machine_decollage.options.length > 0) {
+                    select_pilotes_machine_decollage.remove(0);
+                    //on a enlevé les enfants de la liste                   
+                }
+                for (let element of infos_fixes["pilotes_tr"]) {
+                    let option = document.createElement("option");
+                    option.value = element;
+                    option.text = element;
+                    select_pilotes_machine_decollage.appendChild(option);
+                }
             } else {
                 while (select_machines_decollage.options.length > 0) {
                     select_machines_decollage.remove(0);
                     //on a enlevé les enfants de la liste                   
                 }
-                for (let element of ["remorqueurs"]) {
+                for (let element of infos_fixes["remorqueurs"]) {
+                    let option = document.createElement("option");
+                    option.value = element;
+                    option.text = element;
+                    select_machines_decollage.appendChild(option);
+                }
+
+                while (select_pilotes_machine_decollage.options.length > 0) {
+                    select_pilotes_machine_decollage.remove(0);
+                    //on a enlevé les enfants de la liste                   
+                }
+                for (let element of infos_fixes["pilotes_rq"]) {
                     let option = document.createElement("option");
                     option.value = element;
                     option.text = element;
