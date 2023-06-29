@@ -31,7 +31,7 @@ const CodeVol = [
 
 
 
-async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
+async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
     let numero_vol_planeur = 0;
     for (var vol of vols) {
         numero_vol_planeur += 1;
@@ -83,7 +83,7 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
 
 
  
-async function premier_chargement_tableau(document, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
+async function premier_chargement_tableau(document, infos_fixes) {
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");

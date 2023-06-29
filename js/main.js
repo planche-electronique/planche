@@ -36,18 +36,22 @@ async function sous_maitre(document) {
     let pilotes_tr       = await lire_json(adresse_serveur+'/pilotes_tr.json');
     let pilotes_rq       = await lire_json(adresse_serveur+'/pilotes_rq.json');
 
+    let infos_fixes = {
+        "immatriculations": immatriculations,
+        "pilotes": pilotes,
+        "treuils": treuils,
+        "remorqueurs": remorqueurs,
+        "pilotes_tr": pilotes_tr,
+        "pilotes_rq": pilotes_rq
+    }
+
     await premier_chargement_tableau(
         document,
-        immatriculations,
-        pilotes,
-        pilotes_tr,
-        pilotes_rq,
-        treuils,
-        remorqueurs
+        infos_fixes
     );
         
     let tableau = document.getElementById("tableau");
-    mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs);
+    mise_a_jour_automatique(document, tableau, infos_fixes);
 }
     
     
@@ -58,7 +62,7 @@ document.addEventListener('DOMContentLoaded', (_) => {
 
 
 
-async function mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
+async function mise_a_jour_automatique(document, tableau, infos_fixes) {
     
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
@@ -67,10 +71,10 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
     let entree_date = document.getElementById("entree_date");
     let date = entree_date.value;
     let vols = await vols_du(date.replaceAll("-", "/"));
-    await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils , remorqueurs);
+    await chargement_des_ressources(document, tableau, vols, infos_fixes);
     setTimeout(
         function() {
-            mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs);
+            mise_a_jour_automatique(document, tableau, infos_fixes);
         },
         77777
     );
