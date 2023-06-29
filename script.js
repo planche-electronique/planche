@@ -4,12 +4,13 @@ const adresse_serveur = 'http://127.0.0.1:7878'
 
 
 async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
+    let numero_vol_planeur = 0;
     for (var vol of vols) {
-
+        numero_vol_planeur += 1;
         let ligne = tableau.insertRow();
         
         //numero_ogn
-        texte_tableau_generique(document, ligne, structuredClone(vol).numero_ogn, "numero_ogn", vol);
+        texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ogn", vol);
         //code de decollage
         select_generique("code_decollage", vol["code_decollage"], CodeDecollage, ligne, vol);
         // machine de decollage
