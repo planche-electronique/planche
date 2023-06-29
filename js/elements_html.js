@@ -54,57 +54,40 @@ function select_generique(champ, valeur, ligne, vol, infos_fixes) {
         liste.addEventListener("change", function() {
             let select_machines_decollage = document.getElementById("machine_decollage" + numero_ogn);
             let select_pilotes_machine_decollage = document.getElementById("decolleur" + numero_ogn);
+            let liste_machines_decollage;
+            let liste_pilotes;
             if (this.value == "T") {
-                while (select_machines_decollage.options.length > 0) {
-                    select_machines_decollage.remove(0);
-                    //on a enlevé les enfants de la liste                   
-                }
-                for (let element of infos_fixes["treuils"]) {
-                    let option = document.createElement("option");
-                    option.value = element;
-                    option.text = element;
-                    select_machines_decollage.appendChild(option);
-                }
-
-                while (select_pilotes_machine_decollage.options.length > 0) {
-                    select_pilotes_machine_decollage.remove(0);
-                    //on a enlevé les enfants de la liste                   
-                }
-                for (let element of infos_fixes["pilotes_tr"]) {
-                    let option = document.createElement("option");
-                    option.value = element;
-                    option.text = element;
-                    select_pilotes_machine_decollage.appendChild(option);
-                }
+                liste_machines_decollage = infos_fixes["treuils"];
+                liste_pilotes = infos_fixes["pilotes_tr"];
             } else {
-                while (select_machines_decollage.options.length > 0) {
-                    select_machines_decollage.remove(0);
-                    //on a enlevé les enfants de la liste                   
-                }
-                for (let element of infos_fixes["remorqueurs"]) {
-                    let option = document.createElement("option");
-                    option.value = element;
-                    option.text = element;
-                    select_machines_decollage.appendChild(option);
-                }
-
-                while (select_pilotes_machine_decollage.options.length > 0) {
-                    select_pilotes_machine_decollage.remove(0);
-                    //on a enlevé les enfants de la liste                   
-                }
-                for (let element of infos_fixes["pilotes_rq"]) {
-                    let option = document.createElement("option");
-                    option.value = element;
-                    option.text = element;
-                    select_pilotes_machine_decollage.appendChild(option);
-                }
+                liste_machines_decollage = infos_fixes["remorqueurs"];
+                liste_pilotes = infos_fixes["pilotes_rq"];
             }
+
+            nettoyer_et_ajouter_au_select(select_machines_decollage, liste_machines_decollage);
+            nettoyer_et_ajouter_au_select(select_pilotes_machine_decollage, liste_pilotes);
         })
     }
     let selecteur_date = document.getElementById("entree_date");
     let date = selecteur_date.value.replaceAll("-", "/");
     liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value, date)});
                 
+}
+
+
+
+
+function nettoyer_et_ajouter_au_select(select, liste) {
+    while (select.options.length > 0) {
+        select.remove(0);
+        //on a enlevé les enfants de la liste                   
+    }
+    for (let element of liste) {
+        let option = document.createElement("option");
+        option.value = element;
+        option.text = element;
+        select.appendChild(option);
+    }
 }
 
 
