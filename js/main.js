@@ -18,25 +18,6 @@ const adresse_serveur = 'http://127.0.0.1:7878'
 
 
 
-const CodeDecollage = [
-    "T",
-    "R",
-];
-
-
-
-    
-const CodeVol = [
-    "B",
-    "S",
-    "E",
-    "C",
-    "M",
-]
-
-
-
-
 async function maitre(document) {
     
     let bouton = document.getElementById("bouton_soumission");

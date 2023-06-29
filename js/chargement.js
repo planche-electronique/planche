@@ -12,6 +12,25 @@
 
 
 
+const CodeDecollage = [
+    "T",
+    "R",
+];
+
+
+
+    
+const CodeVol = [
+    "B",
+    "S",
+    "E",
+    "C",
+    "M",
+]
+
+
+
+
 async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
     let numero_vol_planeur = 0;
     for (var vol of vols) {
@@ -22,16 +41,7 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
         texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ogn", vol);
         //code de decollage
         select_generique("code_decollage", vol["code_decollage"], CodeDecollage, ligne, vol);
-        //selectionne les pilotes et les machines en fonction du moyen de decollage
-        let machines_decollage = []; 
-        let pilotes_decollage = [];
-        if (vol["code_decollage"] == "T") {
-            machines_decollage = treuils;
-            pilotes_decollage = pilotes_tr;
-        } else if (vol["code_decollage"] == "R") {
-            machines_decollage = remorqueurs;
-            pilotes_decollage = pilotes_rq;
-        }
+        
         // machine de decollage
         select_generique("machine_decollage", vol["machine_decollage"], machines_decollage, ligne, vol);
         //pilote qui a fait decoller
