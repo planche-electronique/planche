@@ -13,8 +13,30 @@
 
 
 //fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
-function select_generique(champ, valeur, liste_elements, ligne, vol) {
-       
+function select_generique(champ, valeur, ligne, vol, infos_fixes) {
+    let liste_elements;
+    if (champ == "machine_decollage") {
+        if (vol["code_decollage"] == "T") {
+            liste_elements = infos_fixes["treuils"];
+        } else if (vol["code_decollage"] == "R") {
+            liste_elements = infos_fixes["remorqueurs"];
+        }   
+    } else if (champ == "decolleur") {
+        if (vol["code_decollage"] == "T") {
+            liste_elements = infos_fixes["pilotes_tr"];
+        } else if (vol["code_decollage"] == "R") {
+            liste_elements = infos_fixes["pilotes_rq"];
+        }   
+    } else if (champ == "pilote1" || champ == "pilote2") {
+        liste_elements = infos_fixes["pilotes"];
+    } else if (champ == "code_decollage") {
+        liste_elements = infos_fixes["CodeDecollage"];
+    } else if (champ == "code_vol") {
+        liste_elements = infos_fixes["CodeVol"];
+    } else if (champ == "aeronef") {
+        liste_elements = infos_fixes["immatriculations"];
+    }
+
     let cellule = ligne.insertCell();
     let liste = document.createElement("select");
     cellule.appendChild(liste);
@@ -33,22 +55,22 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
             let select_machines_decollage = document.getElementById("machine_decollage" + numero_ogn);
             let select_pilotes_machine_decollage = document.getElementById("decolleur" + numero_ogn);
             if (this.value == "T") {
-                while (select_machines_decollage.lastChild) {
-                    select_machines_decollage.removeChild(select_machines_decollage.lastChild);
+                while (select_machines_decollage.options.length > 0) {
+                    select_machines_decollage.remove(0);
                     //on a enlevé les enfants de la liste                   
                 }
-                for (let element of treuils) {
+                for (let element of infos_fixes["treuils"]) {
                     let option = document.createElement("option");
                     option.value = element;
                     option.text = element;
                     select_machines_decollage.appendChild(option);
                 }
             } else {
-                while (select_pilotes_machine_decollage.lastChild) {
-                    select_pilotes_machine_decollage.removeChild(select_pilotes_machine_decollage.lastChild);
+                while (select_machines_decollage.options.length > 0) {
+                    select_machines_decollage.remove(0);
                     //on a enlevé les enfants de la liste                   
                 }
-                for (let element of treuils) {
+                for (let element of ["remorqueurs"]) {
                     let option = document.createElement("option");
                     option.value = element;
                     option.text = element;

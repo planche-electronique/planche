@@ -12,7 +12,7 @@
 
 
 
-async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
+async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
     let numero_vol_planeur = 0;
     for (var vol of vols) {
         numero_vol_planeur += 1;
@@ -21,29 +21,20 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
         //numero_ogn
         texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ogn", vol);
         //code de decollage
-        select_generique("code_decollage", vol["code_decollage"], CodeDecollage, ligne, vol);
-        //selectionne les pilotes et les machines en fonction du moyen de decollage
-        let machines_decollage = []; 
-        let pilotes_decollage = [];
-        if (vol["code_decollage"] == "T") {
-            machines_decollage = treuils;
-            pilotes_decollage = pilotes_tr;
-        } else if (vol["code_decollage"] == "R") {
-            machines_decollage = remorqueurs;
-            pilotes_decollage = pilotes_rq;
-        }
+        select_generique("code_decollage", vol["code_decollage"], ligne, vol, infos_fixes);
+        
         // machine de decollage
-        select_generique("machine_decollage", vol["machine_decollage"], machines_decollage, ligne, vol);
+        select_generique("machine_decollage", vol["machine_decollage"], ligne, vol, infos_fixes);
         //pilote qui a fait decoller
-        select_generique("decolleur", vol["decolleur"], pilotes_decollage, ligne, vol);
+        select_generique("decolleur", vol["decolleur"], ligne, vol, infos_fixes);
         //immatriculation
-        select_generique("aeronef", vol["aeronef"], immatriculations, ligne, vol);
+        select_generique("aeronef", vol["aeronef"], ligne, vol, infos_fixes);
         //code vol
-        select_generique("code_vol", vol["code_vol"], CodeVol, ligne, vol);
+        select_generique("code_vol", vol["code_vol"], ligne, vol, infos_fixes);
         // pilote 1 (cdb, instructeur...)
-        select_generique("pilote1", vol["pilote1"], pilotes, ligne, vol);
+        select_generique("pilote1", vol["pilote1"], ligne, vol, infos_fixes);
         // pilote 2 (eleve, passager...)
-        select_generique("pilote2", vol["pilote2"], pilotes, ligne, vol);
+        select_generique("pilote2", vol["pilote2"], ligne, vol, infos_fixes);
 
         let decollage = temps_texte_vers_heure_type(vol.decollage);
         let atterissage = temps_texte_vers_heure_type(vol.atterissage);
@@ -73,7 +64,7 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
 
 
  
-async function premier_chargement_tableau(document, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
+async function premier_chargement_tableau(document, infos_fixes) {
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");

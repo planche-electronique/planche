@@ -58,12 +58,7 @@ async function recharger(
     document,
     date_format_tirets,
     tableau,
-    immatriculations,
-    pilotes,
-    pilotes_tr,
-    pilotes_rq,
-    treuils,
-    remorqueurs
+    infos_fixes
 ) {
     
     while(tableau.rows.length > 1) {
@@ -74,12 +69,7 @@ async function recharger(
         document,
         tableau,
         vols,
-        immatriculations,
-        pilotes,
-        pilotes_tr,
-        pilotes_rq,
-        treuils,
-        remorqueurs
+        infos_fixes
     );
 }
 
