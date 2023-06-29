@@ -212,11 +212,12 @@ async function vols_du(date_format_slash) {
 
 
 
-async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
-    let corps = JSON.stringify({
+async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur, date) {
+        let corps = JSON.stringify({
         "numero_ogn": numero_ogn,
         "champ_mis_a_jour": champ,
-        "nouvelle_valeur": nouvelle_valeur
+        "nouvelle_valeur": nouvelle_valeur,
+        "date": date
     });
     let length = corps.length;
     await fetch(adresse_serveur+'/mise_a_jour', {
@@ -330,8 +331,9 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
             }
         })
     }
-    
-    liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
+    let selecteur_date = document.getElementById("entree_date");
+    let date = selecteur_date.value.replaceAll("-", "/");
+    liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value, date)});
                 
 }
 
