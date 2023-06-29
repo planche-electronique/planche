@@ -317,9 +317,17 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
                     select_machines_decollage.appendChild(option);
                 }
             } else {
-                
+                while (select_pilotes_machine_decollage.lastChild) {
+                    select_pilotes_machine_decollage.removeChild(select_pilotes_machine_decollage.lastChild);
+                    //on a enlevé les enfants de la liste                   
+                }
+                for (let element of treuils) {
+                    let option = document.createElement("option");
+                    option.value = element;
+                    option.text = element;
+                    select_pilotes_machine_decollage.appendChild(option);
+                }
             }
-            
         })
     }
     
