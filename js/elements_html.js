@@ -13,18 +13,18 @@
 
 
 //fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
-function select_generique(champ, valeur, ligne, vol, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
+function select_generique(champ, valeur, ligne, vol, infos_fixes) {
     if (champ == "machine_decollage") {
         if (vol["code_decollage"] == "T") {
-            liste_elements = treuils;
+            liste_elements = infos_fixes["treuils"];
         } else if (vol["code_decollage"] == "R") {
-            liste_elements = remorqueurs;
+            liste_elements = infos_fixes["remorqueurs"];
         }   
     } else if (champ == "decolleur") {
         if (vol["code_decollage"] == "T") {
-            liste_elements = pilotes_tr;
+            liste_elements = infos_fixes["pilotes_tr"];
         } else if (vol["code_decollage"] == "R") {
-            liste_elements = pilotes_rq;
+            liste_elements = ["pilotes_rq"];
         }   
     }
 
@@ -50,7 +50,7 @@ function select_generique(champ, valeur, ligne, vol, pilotes_tr, pilotes_rq, tre
                     select_machines_decollage.remove(0);
                     //on a enlevé les enfants de la liste                   
                 }
-                for (let element of treuils) {
+                for (let element of infos_fixes["treuils"]) {
                     let option = document.createElement("option");
                     option.value = element;
                     option.text = element;
@@ -61,7 +61,7 @@ function select_generique(champ, valeur, ligne, vol, pilotes_tr, pilotes_rq, tre
                     select_machines_decollage.remove(0);
                     //on a enlevé les enfants de la liste                   
                 }
-                for (let element of remorqueurs) {
+                for (let element of ["remorqueurs"]) {
                     let option = document.createElement("option");
                     option.value = element;
                     option.text = element;
