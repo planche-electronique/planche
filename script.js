@@ -3,7 +3,7 @@ const adresse_serveur = 'http://127.0.0.1:7878'
 
 
 
-async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
+async function chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
     let numero_vol_planeur = 0;
     for (var vol of vols) {
         numero_vol_planeur += 1;
@@ -13,15 +13,19 @@ async function chargement_des_ressources(document, tableau, vols, immatriculatio
         texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ogn", vol);
         //code de decollage
         select_generique("code_decollage", vol["code_decollage"], CodeDecollage, ligne, vol);
+        //selectionne les pilotes et les machines en fonction du moyen de decollage
+        let machines_decollage = []; 
+        let pilotes_decollage = [];
+        if (vol["code_decollage"] == "T") {
+            machines_decollage = treuils;
+            pilotes_decollage = pilotes_tr;
+        } else if (vol["code_decollage"] == "R") {
+            machines_decollage = remorqueurs;
+            pilotes_decollage = pilotes_rq;
+        }
         // machine de decollage
         select_generique("machine_decollage", vol["machine_decollage"], machines_decollage, ligne, vol);
         //pilote qui a fait decoller
-        let pilotes_decollage = [];
-        if (vol["code_decollage"] == "T") {
-            pilotes_decollage = pilotes_tr;
-        } else if (vol["code_decollage"] == "R") {
-            pilotes_decollage = pilotes_rq;
-        }
         select_generique("decolleur", vol["decolleur"], pilotes_decollage, ligne, vol);
         //immatriculation
         select_generique("aeronef", vol["aeronef"], immatriculations, ligne, vol);
@@ -68,17 +72,15 @@ const CodeDecollage = [
 
     
 const CodeVol = [
+    "B",
     "S",
     "E",
-    "B",
     "C",
     "M",
 ]
 
-
-
     
-async function premier_chargement_tableau(document, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
+async function premier_chargement_tableau(document, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");
@@ -115,7 +117,8 @@ async function premier_chargement_tableau(document, immatriculations, pilotes, p
                 pilotes,
                 pilotes_tr,
                 pilotes_rq,
-                machines_decollage
+                treuils,
+                remorqueurs
             );
         }
     );
@@ -136,9 +139,9 @@ async function premier_chargement_tableau(document, immatriculations, pilotes, p
         let th = document.createElement("th");
         th.textContent = titre;
         tr.appendChild(th);
+    
     }
     tableau.appendChild(thead);
-    
     let tbody = document.createElement("tbody");
     tbody.id = "body_tableau";
     tableau_html.appendChild(tbody);       
@@ -158,11 +161,12 @@ async function maitre(document) {
 
 async function sous_maitre(document) {
         
-    let immatriculations   = await lire_json(adresse_serveur+'/immatriculations.json');    
-    let pilotes            = await lire_json(adresse_serveur+'/pilotes.json');
-    let machines_decollage = await lire_json(adresse_serveur+'/machines_decollages.json');
-    let pilotes_tr         = await lire_json(adresse_serveur+'/pilotes_tr.json')
-    let pilotes_rq         = await lire_json(adresse_serveur+'/pilotes_rq.json')
+    let immatriculations = await lire_json(adresse_serveur+'/immatriculations.json');    
+    let pilotes          = await lire_json(adresse_serveur+'/pilotes.json');
+    let treuils          = await lire_json(adresse_serveur+'/treuils.json');
+    let remorqueurs      = await lire_json(adresse_serveur+'/remorqueurs.json');
+    let pilotes_tr       = await lire_json(adresse_serveur+'/pilotes_tr.json');
+    let pilotes_rq       = await lire_json(adresse_serveur+'/pilotes_rq.json');
 
     await premier_chargement_tableau(
         document,
@@ -170,11 +174,12 @@ async function sous_maitre(document) {
         pilotes,
         pilotes_tr,
         pilotes_rq,
-        machines_decollage
+        treuils,
+        remorqueurs
     );
         
     let tableau = document.getElementById("tableau");
-    mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
+    mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs);
 }
     
     
@@ -227,7 +232,7 @@ async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur) {
 
 
 
-async function mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage) {
+async function mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs) {
     
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
@@ -236,10 +241,10 @@ async function mise_a_jour_automatique(document, tableau, immatriculations, pilo
     let entree_date = document.getElementById("entree_date");
     let date = entree_date.value;
     let vols = await vols_du(date.replaceAll("-", "/"));
-    await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
+    await chargement_des_ressources(document, tableau, vols, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils , remorqueurs);
     setTimeout(
         function() {
-            mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, machines_decollage);
+            mise_a_jour_automatique(document, tableau, immatriculations, pilotes, pilotes_tr, pilotes_rq, treuils, remorqueurs);
         },
         77777
     );
@@ -256,7 +261,8 @@ async function recharger(
     pilotes,
     pilotes_tr,
     pilotes_rq,
-    machines_decollage
+    treuils,
+    remorqueurs
 ) {
     
     while(tableau.rows.length > 1) {
@@ -271,7 +277,8 @@ async function recharger(
         pilotes,
         pilotes_tr,
         pilotes_rq,
-        machines_decollage
+        treuils,
+        remorqueurs
     );
 }
 
@@ -290,9 +297,10 @@ function select_generique(champ, valeur, liste_elements, ligne, vol) {
         option.text = element;
         liste.appendChild(option);
     }
-    liste.value = valeur;
-    
     let numero_ogn = structuredClone(vol).numero_ogn;
+    liste.value = valeur;
+    liste.id = champ + numero_ogn;
+    
     liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value)});
                 
 }
@@ -331,7 +339,6 @@ function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decol
     bouton_envoi.type = "button";
     bouton_envoi.value = "Enregistrer";
     bouton_envoi.addEventListener("click", function() {
-
         if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value))) {
             alert("Le décollage ne peut pas etre plus tard que l'atterissage !");
             
