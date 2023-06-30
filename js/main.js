@@ -13,8 +13,7 @@
 
 
 
-const adresse_serveur = 'http://127.0.0.1:7878'
-
+const adresse_serveur = window.location.host;
 
 
 
