@@ -13,10 +13,6 @@
 
 
 
-const adresse_serveur = window.location.host;
-
-
-
 async function maitre(document) {
     
     let bouton = document.getElementById("bouton_soumission");
@@ -27,13 +23,12 @@ async function maitre(document) {
 }
 
 async function sous_maitre(document) {
-        
-    let immatriculations = await lire_json(adresse_serveur+'/immatriculations.json');    
-    let pilotes          = await lire_json(adresse_serveur+'/pilotes.json');
-    let treuils          = await lire_json(adresse_serveur+'/treuils.json');
-    let remorqueurs      = await lire_json(adresse_serveur+'/remorqueurs.json');
-    let pilotes_tr       = await lire_json(adresse_serveur+'/pilotes_tr.json');
-    let pilotes_rq       = await lire_json(adresse_serveur+'/pilotes_rq.json');
+    let immatriculations = await lire_json('./immatriculations.json');    
+    let pilotes          = await lire_json('./pilotes.json');
+    let treuils          = await lire_json('./treuils.json');
+    let remorqueurs      = await lire_json('./remorqueurs.json');
+    let pilotes_tr       = await lire_json('./pilotes_tr.json');
+    let pilotes_rq       = await lire_json('./pilotes_rq.json');
 
     const CodeDecollage = [
         "T",

@@ -13,6 +13,7 @@
 
 
 async function lire_json(adresse) {
+    console.log(adresse);
     return await fetch(adresse)
         .then(response => {
             if (!response.ok) {
@@ -26,7 +27,7 @@ async function lire_json(adresse) {
 
 
 async function vols_du(date_format_slash) {
-    let adresse = adresse_serveur + "/vols/" + date_format_slash;
+    let adresse = "/vols/" + date_format_slash;
     return await lire_json(adresse);
 }
 
