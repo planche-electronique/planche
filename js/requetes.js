@@ -34,7 +34,11 @@ async function vols_du(date_format_slash) {
 
 
 async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur, date) {
-        let corps = JSON.stringify({
+    if (champ == "code_decollage") {
+        requete_mise_a_jour(numero_ogn, "machine_decollage", "", date);
+        requete_mise_a_jour(numero_ogn, "decolleur", "", date);
+    }
+    let corps = JSON.stringify({
         "numero_ogn": numero_ogn,
         "champ_mis_a_jour": champ,
         "nouvelle_valeur": nouvelle_valeur,

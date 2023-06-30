@@ -88,6 +88,7 @@ function nettoyer_et_ajouter_au_select(select, liste) {
         option.text = element;
         select.appendChild(option);
     }
+    select.value = "";
 }
 
 
