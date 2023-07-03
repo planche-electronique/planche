@@ -133,3 +133,11 @@ async function premier_chargement_tableau(document, infos_fixes) {
 
 
 
+
+function chargement_affectations(document, affectations) {
+    let body = document.getElementById("body");
+    
+}
+
+
+

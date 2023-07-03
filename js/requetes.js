@@ -65,17 +65,29 @@ async function recharger(
     tableau,
     infos_fixes
 ) {
-    
+    let date_aujourdhui = Date.now();
+    let annee = date_aujourdhui.getFullYear();
+    let mois = date_aujourdhui.getMonth();
+    let jour = date_aujourdhui.getDate();
+    let date_aujourdhui_tirets = annee+"-"+mois+"-"+jour;
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
     }
-    let vols = await vols_du(date_format_tirets.replaceAll("-", "/"));
+    let vols;
+    if (date_aujourdhui_tirets == date_format_tirets) {
+        let planche = await lire_json("./planche/");
+        vols = planche["vols"];
+        let affectations = planche["affectations"];
+        chargement_affectations(document, affectations);
+    } else {
+        vols = await vols_du(date_format_tirets.replaceAll("-", "/"));       
+    }
     await chargement_des_ressources(
         document,
         tableau,
         vols,
         infos_fixes
-    );
+    );    
 }
 
 
