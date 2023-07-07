@@ -145,13 +145,15 @@ function chargement_affectations(document, affectations, infos_fixes) {
     let select_pilote_tr = select_generique(document, infos_fixes["pilotes_tr"], "pilote_tr", affectations["pilote_tr"]);
     let select_remorqueur = select_generique(document, infos_fixes["remorqueurs"], "remorqueur", affectations["remorqueurs"]);
     let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
-    for (let element of [select_treuil, select_pilote_tr, select_remorqueur, select_pilote_rq]) {
+    let select_chef_piste = select_generique(document, infos_fixes["pilotes"], "chef_piste", affectations["chef_piste"]);
+    for (let element of [select_treuil, select_pilote_tr, select_remorqueur, select_pilote_rq, select_chef_piste]) {
         div_affectations.appendChild(element);
     }
     select_treuil.addEventListener("change", function() { requete_mise_a_jour(0, "treuil", this.value, date)});
     select_pilote_tr.addEventListener("change", function() { requete_mise_a_jour(0, "pilote_tr", this.value, date)});
     select_remorqueur.addEventListener("change", function() { requete_mise_a_jour(0, "remorqueur", this.value, date)});
     select_pilote_rq.addEventListener("change", function() { requete_mise_a_jour(0, "pilote_rq", this.value, date)});
+    select_chef_piste.addEventListener("change", function() { requete_mise_a_jour(0, "chef_piste", this.value, date)});
     
 
     
