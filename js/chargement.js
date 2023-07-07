@@ -18,8 +18,12 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         numero_vol_planeur += 1;
         let ligne = tableau.insertRow();
         
-        //numero_ogn
-        texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ogn", vol);
+        //numero si pas affecte i.e. si numero_ogn > 0
+        if (structuredClone(vol).numero_ogn > 0) {
+            texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ligne", vol);
+        } else {
+            texte_tableau_generique(document, ligne, "", "numero_ligne", vol);
+        }
         //code de decollage
         select_generique_tableau("code_decollage", vol["code_decollage"], ligne, vol, infos_fixes);
         
