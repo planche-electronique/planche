@@ -18,13 +18,13 @@ function select_generique_tableau(champ, valeur, ligne, vol, infos_fixes) {
     if (champ == "machine_decollage") {
         if (vol["code_decollage"] == "T") {
             liste_elements = infos_fixes["treuils"];
-        } else if (vol["code_decollage"] == "R") {
+        } else { //vol["code_decollage"] = "R"
             liste_elements = infos_fixes["remorqueurs"];
         }   
     } else if (champ == "decolleur") {
         if (vol["code_decollage"] == "T") {
             liste_elements = infos_fixes["pilotes_tr"];
-        } else if (vol["code_decollage"] == "R") {
+        } else { // vol["code_decollage"] = "R"
             liste_elements = infos_fixes["pilotes_rq"];
         }   
     } else if (champ == "pilote1" || champ == "pilote2") {
@@ -36,6 +36,7 @@ function select_generique_tableau(champ, valeur, ligne, vol, infos_fixes) {
     } else if (champ == "aeronef") {
         liste_elements = infos_fixes["immatriculations"];
     }
+    console.log(liste_elements);
 
     let numero_ogn = structuredClone(vol).numero_ogn;
     let cellule = ligne.insertCell();
@@ -70,6 +71,7 @@ function select_generique_tableau(champ, valeur, ligne, vol, infos_fixes) {
 
 
 function select_generique(document, liste_elements, id, valeur) {
+    console.log(liste_elements);
     let liste = document.createElement("select");
     for (let element of liste_elements) {
         let option = document.createElement("option");
