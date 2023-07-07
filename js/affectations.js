@@ -40,3 +40,10 @@ async function creer_affectation(vols, infos_fixes) {
         infos_fixes
     );
 }
+
+
+
+
+function supprimer_vol(numero_ogn, vols) {
+    console.log(numero_ogn + vols);
+}

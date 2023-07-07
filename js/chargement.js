@@ -18,6 +18,12 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         numero_vol_planeur += 1;
         let ligne = tableau.insertRow();
         
+        let bouton_supprimer = document.createElement("button");
+        let texte_bouton_suppr = document.createTextNode("-");
+        bouton_supprimer.appendChild(texte_bouton_suppr);
+        ligne.appendChild(bouton_supprimer);
+        bouton_supprimer.addEventListener("click", async function() {await supprimer_vol(structuredClone(vol).numero_ogn, vols)});
+        
         //numero si pas affecte i.e. si numero_ogn > 0
         if (structuredClone(vol).numero_ogn > 0) {
             texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ligne", vol);
@@ -68,7 +74,7 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
 
 
  
-async function premier_chargement_tableau(document, infos_fixes) {
+async function premier_chargement_tableau(document, infos_fixes, vols) {
     let code_pilote = document.getElementById("champ_code_pilote").value;
     let mot_de_passe = document.getElementById("champ_mot_de_passe").value;
     let body = document.getElementById("body");
@@ -124,6 +130,12 @@ async function premier_chargement_tableau(document, infos_fixes) {
 
     let tr = document.createElement("tr");
     thead.appendChild(tr);
+    //creation du bouton de creation de vol
+    let bouton_plus = document.createElement("button");
+    let texte_bouton = document.createTextNode("+");
+    bouton_plus.appendChild(texte_bouton);
+    tr.appendChild(bouton_plus);
+    bouton_plus.addEventListener("click", async function() { await creer_affectation(vols, infos_fixes); });
     let colonnes = [
         "Ligne", "Code de décollage", "Avec", "Par", "Immatriculation", "Code vol", "Commandant de bord ou Instructeur", "Pilote 2 ou élève", "Heure de décollage", "Heure d'atterissage", "Temps de vol"
     ];
