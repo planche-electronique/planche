@@ -73,14 +73,18 @@ document.addEventListener('DOMContentLoaded', (_) => {
 
 
 async function mise_a_jour_automatique(document, tableau, infos_fixes) {
-    
-    while(tableau.rows.length > 1) {
-        tableau.deleteRow(1);
-    }
-
+    nettoyage(document);    
     let entree_date = document.getElementById("entree_date");
     let date = entree_date.value;
-    let vols = await vols_du(date.replaceAll("-", "/"));
+    let vols;
+    if (date == "2023-04-25") { //today ...
+        let planche = await lire_json("./planche");
+        vols = planche.vols;
+        let affectations = planche.affectations;
+        chargement_affectations(document, affectations, infos_fixes);
+    } else {
+        vols = await vols_du(date.replaceAll("-", "/"));
+    }
     await chargement_des_ressources(document, tableau, vols, infos_fixes);
     setTimeout(
         function() {

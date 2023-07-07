@@ -21,20 +21,20 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         //numero_ogn
         texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ogn", vol);
         //code de decollage
-        select_generique("code_decollage", vol["code_decollage"], ligne, vol, infos_fixes);
+        select_generique_tableau("code_decollage", vol["code_decollage"], ligne, vol, infos_fixes);
         
         // machine de decollage
-        select_generique("machine_decollage", vol["machine_decollage"], ligne, vol, infos_fixes);
+        select_generique_tableau("machine_decollage", vol["machine_decollage"], ligne, vol, infos_fixes);
         //pilote qui a fait decoller
-        select_generique("decolleur", vol["decolleur"], ligne, vol, infos_fixes);
+        select_generique_tableau("decolleur", vol["decolleur"], ligne, vol, infos_fixes);
         //immatriculation
-        select_generique("aeronef", vol["aeronef"], ligne, vol, infos_fixes);
+        select_generique_tableau("aeronef", vol["aeronef"], ligne, vol, infos_fixes);
         //code vol
-        select_generique("code_vol", vol["code_vol"], ligne, vol, infos_fixes);
+        select_generique_tableau("code_vol", vol["code_vol"], ligne, vol, infos_fixes);
         // pilote 1 (cdb, instructeur...)
-        select_generique("pilote1", vol["pilote1"], ligne, vol, infos_fixes);
+        select_generique_tableau("pilote1", vol["pilote1"], ligne, vol, infos_fixes);
         // pilote 2 (eleve, passager...)
-        select_generique("pilote2", vol["pilote2"], ligne, vol, infos_fixes);
+        select_generique_tableau("pilote2", vol["pilote2"], ligne, vol, infos_fixes);
 
         let decollage = temps_texte_vers_heure_type(vol.decollage);
         let atterissage = temps_texte_vers_heure_type(vol.atterissage);
@@ -106,7 +106,11 @@ async function premier_chargement_tableau(document, infos_fixes) {
             );
         }
     );
-    
+    let li_affectations = document.createElement("li");
+    ul.appendChild(li_affectations);
+    let div_affectations = document.createElement("div");
+    div_affectations.id = "affectations";
+    li.appendChild(div_affectations);
     let tableau_html = document.createElement("table");
     tableau_html.id = "tableau";
     body.appendChild(tableau_html);
@@ -134,10 +138,50 @@ async function premier_chargement_tableau(document, infos_fixes) {
 
 
 
-function chargement_affectations(document, affectations) {
-    let body = document.getElementById("body");
+function chargement_affectations(document, affectations, infos_fixes) {
+    let div_affectations = document.getElementById("affectations");
+    let date = document.getElementById("entree_date").value;
+    let select_treuil =  select_generique(document, infos_fixes["treuils"], "treuil", affectations["treuil"]);
+    let select_pilote_tr = select_generique(document, infos_fixes["pilotes_tr"], "pilote_tr", affectations["pilote_tr"]);
+    let select_remorqueur = select_generique(document, infos_fixes["remorqueurs"], "remorqueur", affectations["remorqueurs"]);
+    let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
+    for (let element of [select_treuil, select_pilote_tr, select_remorqueur, select_pilote_rq]) {
+        div_affectations.appendChild(element);
+    }
+    select_treuil.addEventListener("change", function() { requete_mise_a_jour(0, "treuil", this.value, date)});
+    select_pilote_tr.addEventListener("change", function() { requete_mise_a_jour(0, "pilote_tr", this.value, date)});
+    select_remorqueur.addEventListener("change", function() { requete_mise_a_jour(0, "remorqueur", this.value, date)});
+    select_pilote_rq.addEventListener("change", function() { requete_mise_a_jour(0, "pilote_rq", this.value, date)});
     
+
+    
+
 }
 
 
 
+function nettoyage_tableau(tableau) {
+    while(tableau.rows.length > 1) {
+        tableau.deleteRow(1);
+    }
+}
+
+
+
+
+function nettoyage_div_affectations(div_affectations) {
+    while(div_affectations.firstChild) {
+        div_affectations.removeChild(div_affectations.lastChild);
+    }
+}
+
+
+
+
+function nettoyage(document) {
+    let tableau = document.getElementById("tableau");
+    nettoyage_tableau(tableau);
+
+    let div_affectations = document.getElementById("affectations");
+    nettoyage_div_affectations(div_affectations);
+}

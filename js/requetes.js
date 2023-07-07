@@ -78,7 +78,7 @@ async function recharger(
         let planche = await lire_json("./planche/");
         vols = planche["vols"];
         let affectations = planche["affectations"];
-        chargement_affectations(document, affectations);
+        chargement_affectations(document, affectations, infos_fixes);
     } else {
         vols = await vols_du(date_format_tirets.replaceAll("-", "/"));       
     }
