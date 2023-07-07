@@ -47,5 +47,10 @@ async function creer_affectation(vols, infos_fixes) {
 
 
 
-function supprimer_vol(numero_ogn, vols) {
+async function supprimer_vol(numero_ogn, vols) {
+    let entree_date = document.getElementById("entree_date");
+    let date = entree_date.value;
+    await requete_mise_a_jour(numero_ogn, "supprimer", "", date);
+
+    vols.filter(x => x.numero_ogn == numero_ogn);
 }
