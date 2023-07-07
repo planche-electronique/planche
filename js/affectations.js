@@ -31,8 +31,11 @@ async function creer_affectation(vols, infos_fixes) {
         "decollage": "",
         "atterissage": "",
     });
+    let entree_date = document.getElementById("entree_date");
+    let date = entree_date.value;
     let tableau= document.getElementById("tableau");
     nettoyage_tableau(tableau);
+    await requete_mise_a_jour(plus_petit_numero_ogn-1, "creer", "", date);
     await chargement_des_ressources(
         document,
         tableau,
@@ -45,5 +48,4 @@ async function creer_affectation(vols, infos_fixes) {
 
 
 function supprimer_vol(numero_ogn, vols) {
-    console.log(numero_ogn + vols);
 }
