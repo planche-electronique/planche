@@ -46,7 +46,7 @@ async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur, date) {
         "date": date
     });
     let length = corps.length;
-    await fetch(adresse_serveur+'/mise_a_jour', {
+    await fetch('./mise_a_jour', {
         method: 'POST',
         headers: {
             'Content-Type': 'charset=utf-8',
