@@ -15,7 +15,7 @@
 async function creer_affectation(vols, infos_fixes) {
     let plus_petit_numero_ogn = 0; // pour trouver le plus petit et l'ajouter
     for (let vol of vols) {
-        if (structuredCLone(vol).numero_ogn < plus_petit_numero_ogn) {
+        if (structuredClone(vol).numero_ogn < plus_petit_numero_ogn) {
             plus_petit_numero_ogn = structuredClone(vol).numero_ogn;
         }
     }

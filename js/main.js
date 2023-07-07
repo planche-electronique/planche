@@ -55,6 +55,8 @@ async function sous_maitre(document) {
         "CodeVol": CodeVol
     }
     let vols;        
+    let planche = await lire_json("./planche");
+    vols = planche.vols;
     await premier_chargement_tableau(
         document,
         infos_fixes,
