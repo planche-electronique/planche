@@ -13,18 +13,18 @@
 
 
 //fonction qui permet de créer les select (liste deroulantes de choix) pour une liste d'element et un champ
-function select_generique(champ, valeur, ligne, vol, infos_fixes) {
+function select_generique_tableau(champ, valeur, ligne, vol, infos_fixes) {
     let liste_elements;
     if (champ == "machine_decollage") {
         if (vol["code_decollage"] == "T") {
             liste_elements = infos_fixes["treuils"];
-        } else if (vol["code_decollage"] == "R") {
+        } else { //vol["code_decollage"] = "R"
             liste_elements = infos_fixes["remorqueurs"];
         }   
     } else if (champ == "decolleur") {
         if (vol["code_decollage"] == "T") {
             liste_elements = infos_fixes["pilotes_tr"];
-        } else if (vol["code_decollage"] == "R") {
+        } else { // vol["code_decollage"] = "R"
             liste_elements = infos_fixes["pilotes_rq"];
         }   
     } else if (champ == "pilote1" || champ == "pilote2") {
@@ -37,18 +37,10 @@ function select_generique(champ, valeur, ligne, vol, infos_fixes) {
         liste_elements = infos_fixes["immatriculations"];
     }
 
-    let cellule = ligne.insertCell();
-    let liste = document.createElement("select");
-    cellule.appendChild(liste);
-    for (let element of liste_elements) {
-        let option = document.createElement("option");
-        option.value = element;
-        option.text = element;
-        liste.appendChild(option);
-    }
     let numero_ogn = structuredClone(vol).numero_ogn;
-    liste.value = valeur;
-    liste.id = champ + numero_ogn;
+    let cellule = ligne.insertCell();
+    let liste = select_generique(document, liste_elements, champ+numero_ogn, valeur);
+    cellule.appendChild(liste);
 
     if (champ == "code_decollage") {
         liste.addEventListener("change", function() {
@@ -72,6 +64,22 @@ function select_generique(champ, valeur, ligne, vol, infos_fixes) {
     let date = selecteur_date.value.replaceAll("-", "/");
     liste.addEventListener("change", function(){requete_mise_a_jour(numero_ogn, champ, this.value, date)});
                 
+}
+
+
+
+
+function select_generique(document, liste_elements, id, valeur) {
+    let liste = document.createElement("select");
+    for (let element of liste_elements) {
+        let option = document.createElement("option");
+        option.value = element;
+        option.text = element;
+        liste.appendChild(option);
+    }
+    liste.value = valeur;
+    liste.id = id;
+    return liste;
 }
 
 

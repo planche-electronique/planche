@@ -46,7 +46,7 @@ async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur, date) {
         "date": date
     });
     let length = corps.length;
-    await fetch(adresse_serveur+'/mise_a_jour', {
+    await fetch('./mise_a_jour', {
         method: 'POST',
         headers: {
             'Content-Type': 'charset=utf-8',
@@ -65,17 +65,29 @@ async function recharger(
     tableau,
     infos_fixes
 ) {
-    
+    let date_aujourdhui = Date.now();
+    let annee = date_aujourdhui.getFullYear();
+    let mois = date_aujourdhui.getMonth();
+    let jour = date_aujourdhui.getDate();
+    let date_aujourdhui_tirets = annee+"-"+mois+"-"+jour;
     while(tableau.rows.length > 1) {
         tableau.deleteRow(1);
     }
-    let vols = await vols_du(date_format_tirets.replaceAll("-", "/"));
+    let vols;
+    if (date_aujourdhui_tirets == date_format_tirets) {
+        let planche = await lire_json("./planche/");
+        vols = planche["vols"];
+        let affectations = planche["affectations"];
+        chargement_affectations(document, affectations, infos_fixes);
+    } else {
+        vols = await vols_du(date_format_tirets.replaceAll("-", "/"));       
+    }
     await chargement_des_ressources(
         document,
         tableau,
         vols,
         infos_fixes
-    );
+    );    
 }
 
 

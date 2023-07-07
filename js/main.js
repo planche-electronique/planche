@@ -54,14 +54,16 @@ async function sous_maitre(document) {
         "CodeDecollage": CodeDecollage,
         "CodeVol": CodeVol
     }
-
+    let vols;        
+    let planche = await lire_json("./planche");
+    vols = planche.vols;
     await premier_chargement_tableau(
         document,
-        infos_fixes
+        infos_fixes,
+        vols
     );
-        
     let tableau = document.getElementById("tableau");
-    mise_a_jour_automatique(document, tableau, infos_fixes);
+    mise_a_jour_automatique(document, tableau, infos_fixes, vols);
 }
     
     
@@ -72,19 +74,22 @@ document.addEventListener('DOMContentLoaded', (_) => {
 
 
 
-async function mise_a_jour_automatique(document, tableau, infos_fixes) {
-    
-    while(tableau.rows.length > 1) {
-        tableau.deleteRow(1);
-    }
-
+async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
+    nettoyage(document);    
     let entree_date = document.getElementById("entree_date");
     let date = entree_date.value;
-    let vols = await vols_du(date.replaceAll("-", "/"));
+    if (date == "2023-04-25") { //today ...
+        let planche = await lire_json("./planche");
+        vols = planche.vols;
+        let affectations = planche.affectations;
+        chargement_affectations(document, affectations, infos_fixes);
+    } else {
+        vols = await vols_du(date.replaceAll("-", "/"));
+    }
     await chargement_des_ressources(document, tableau, vols, infos_fixes);
     setTimeout(
         function() {
-            mise_a_jour_automatique(document, tableau, infos_fixes);
+            mise_a_jour_automatique(document, tableau, infos_fixes, vols);
         },
         77777
     );
