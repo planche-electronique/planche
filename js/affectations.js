@@ -19,7 +19,7 @@ async function creer_affectation(vols, infos_fixes) {
             plus_petit_numero_ogn = structuredClone(vol).numero_ogn;
         }
     }
-    vols.unshift({
+    vols.push({
         "numero_ogn": plus_petit_numero_ogn-1,
         "aeronef": "",
         "code_vol":"",
@@ -35,7 +35,7 @@ async function creer_affectation(vols, infos_fixes) {
     let date = entree_date.value;
     let tableau= document.getElementById("tableau");
     nettoyage_tableau(tableau);
-    await requete_mise_a_jour(plus_petit_numero_ogn-1, "creer", "", date);
+    await requete_mise_a_jour(plus_petit_numero_ogn-1, "nouveau", "", date.replaceAll("-", "/"));
     await chargement_des_ressources(
         document,
         tableau,
@@ -47,10 +47,18 @@ async function creer_affectation(vols, infos_fixes) {
 
 
 
-async function supprimer_vol(numero_ogn, vols) {
+async function supprimer_vol(numero_ogn, vols, infos_fixes) {
     let entree_date = document.getElementById("entree_date");
     let date = entree_date.value;
-    await requete_mise_a_jour(numero_ogn, "supprimer", "", date);
+    await requete_mise_a_jour(numero_ogn, "supprimer", "", date.replaceAll("-", "/"));
 
-    vols.filter(x => x.numero_ogn == numero_ogn);
+    
+    vols = vols.filter(x => x["numero_ogn"] != numero_ogn);
+    nettoyage_tableau(tableau);
+    await chargement_des_ressources(
+        document,
+        tableau,
+        vols,
+        infos_fixes
+    );
 }

@@ -36,7 +36,6 @@ function select_generique_tableau(champ, valeur, ligne, vol, infos_fixes) {
     } else if (champ == "aeronef") {
         liste_elements = infos_fixes["immatriculations"];
     }
-    console.log(liste_elements);
 
     let numero_ogn = structuredClone(vol).numero_ogn;
     let cellule = ligne.insertCell();
@@ -71,7 +70,6 @@ function select_generique_tableau(champ, valeur, ligne, vol, infos_fixes) {
 
 
 function select_generique(document, liste_elements, id, valeur) {
-    console.log(liste_elements);
     let liste = document.createElement("select");
     for (let element of liste_elements) {
         let option = document.createElement("option");

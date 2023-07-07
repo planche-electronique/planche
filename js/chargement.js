@@ -15,18 +15,18 @@
 async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
     let numero_vol_planeur = 0;
     for (var vol of vols) {
-        numero_vol_planeur += 1;
         let ligne = tableau.insertRow();
         
         let bouton_supprimer = document.createElement("button");
         let texte_bouton_suppr = document.createTextNode("-");
         bouton_supprimer.appendChild(texte_bouton_suppr);
         ligne.appendChild(bouton_supprimer);
-        bouton_supprimer.addEventListener("click", async function() {await supprimer_vol(structuredClone(vol).numero_ogn, vols)});
+        bouton_supprimer.addEventListener("click", async function() {await supprimer_vol(structuredClone(vol).numero_ogn, vols, infos_fixes)});
         
         //numero si pas affecte i.e. si numero_ogn > 0
         if (structuredClone(vol).numero_ogn > 0) {
             texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ligne", vol);
+            numero_vol_planeur += 1;
         } else {
             texte_tableau_generique(document, ligne, "", "numero_ligne", vol);
         }
