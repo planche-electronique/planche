@@ -12,6 +12,31 @@
 
 
 
-function creer_affectation() {
-  
+async function creer_affectation(vols, infos_fixes) {
+    let plus_petit_numero_ogn = 0; // pour trouver le plus petit et l'ajouter
+    for (let vol of vols) {
+        if (structuredCLone(vol).numero_ogn < plus_petit_numero_ogn) {
+            plus_petit_numero_ogn = structuredClone(vol).numero_ogn;
+        }
+    }
+    vols.unshift({
+        "numero_ogn": plus_petit_numero_ogn-1,
+        "aeronef": "",
+        "code_vol":"",
+        "code_decollage":"",
+        "machine_decollage": "",
+        "decolleur": "",
+        "pilote1": "",
+        "pilote2": "",
+        "decollage": "",
+        "atterissage": "",
+    });
+    let tableau= document.getElementById("tableau");
+    nettoyage_tableau(tableau);
+    await chargement_des_ressources(
+        document,
+        tableau,
+        vols,
+        infos_fixes
+    );
 }
