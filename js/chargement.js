@@ -110,7 +110,7 @@ async function premier_chargement_tableau(document, infos_fixes) {
     ul.appendChild(li_affectations);
     let div_affectations = document.createElement("div");
     div_affectations.id = "affectations";
-    li.appendChild(div_affectations);
+    li_affectations.appendChild(div_affectations);
     let tableau_html = document.createElement("table");
     tableau_html.id = "tableau";
     body.appendChild(tableau_html);
