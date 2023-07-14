@@ -57,6 +57,30 @@ async function sous_maitre(document) {
     let vols;        
     let planche = await lire_json("./planche");
     vols = planche.vols;
+    vols.mettre_a_jour = async function() {
+        let majs = await lire_json("./majs");
+        for (let maj of majs) {
+            let index_vol = vols.findIndex(vol => vol.numero_ogn == maj.numero_ogn);
+            if (maj.champ_mis_a_jour != "supprimer" && maj.champ_mis_a_jour != "nouveau") {
+                vols[index_vol][maj.champ_mis_a_jour] = maj.nouvelle_valeur;
+            } else if (maj.champ_mis_a_jour == "supprimer") {
+                vols.splice(index_vol, 1);
+            } else {
+                let vol = {
+                    "numero_ogn": maj.numero_ogn,
+                    "code_vol": "",
+                    "code_decollage": "",
+                    "decolleur": "",
+                    "aeronef": "",
+                    "pilote1": "",
+                    "pilote2": "",
+                    "decollage": "",
+                    "atterissage": ""
+                }
+                vols.push(vol);
+            }
+        }
+    }
     await premier_chargement_tableau(
         document,
         infos_fixes,
@@ -80,7 +104,7 @@ async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
     let date = entree_date.value;
     if (date == "2023-04-25") { //today ...
         let planche = await lire_json("./planche");
-        vols = planche.vols;
+        await vols.mettre_a_jour();
         let affectations = planche.affectations;
         chargement_affectations(document, affectations, infos_fixes);
     } else {
