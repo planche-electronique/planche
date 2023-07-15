@@ -13,7 +13,6 @@
 
 
 async function lire_json(adresse) {
-    console.log(adresse);
     return await fetch(adresse)
         .then(response => {
             if (!response.ok) {

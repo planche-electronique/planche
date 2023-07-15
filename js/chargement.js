@@ -95,7 +95,7 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
     let a =document.createElement("a");
     let entree_date = document.createElement("input");
     entree_date.type = "date";
-    entree_date.value = "2023-04-25";
+    entree_date.value = date_jour_str(); 
     entree_date.id = "entree_date";
     a.appendChild(entree_date);
     li.appendChild(a);

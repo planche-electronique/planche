@@ -102,7 +102,8 @@ async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
     nettoyage(document);    
     let entree_date = document.getElementById("entree_date");
     let date = entree_date.value;
-    if (date == "2023-04-25") { //today ...
+    let date_ajd_str = date_jour_str();
+    if (date == date_ajd_str) { //today ...
         let planche = await lire_json("./planche");
         await vols.mettre_a_jour();
         let affectations = planche.affectations;
@@ -122,4 +123,20 @@ async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
 
 
 
-
+function date_jour_str() {
+    let date_ajd = new Date;
+    let annee_ajd = date_ajd.getFullYear();
+    let mois_ajd = date_ajd.getMonth();
+    let mois_ajd_str = mois_ajd.toString();
+    if (mois_ajd_str.length <= 1) {
+        mois_ajd_str = "0" + mois_ajd_str;
+    }
+    let jour_ajd = date_ajd.getDate();
+    let jour_ajd_str = jour_ajd.toString();
+    if (jour_ajd_str.length <= 1) {
+        jour_ajd_str = "0" + jour_ajd_str;
+    }
+    let date_ajd_str = annee_ajd + "-" + mois_ajd_str + "-" + jour_ajd_str;
+    return date_ajd_str;
+}
+ 
