@@ -107,12 +107,12 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
                 document,
                 entree_date.value,
                 tableau,
-                immatriculations,
-                pilotes,
-                pilotes_tr,
-                pilotes_rq,
-                treuils,
-                remorqueurs
+                infos_fixes.immatriculations,
+                infos_fixes.pilotes,
+                infos_fixes.pilotes_tr,
+                infos_fixes.pilotes_rq,
+                infos_fixes.treuils,
+                infos_fixes.remorqueurs
             );
         }
     );
