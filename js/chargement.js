@@ -157,14 +157,20 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
 function chargement_affectations(document, affectations, infos_fixes) {
     let div_affectations = document.getElementById("affectations");
     let date = document.getElementById("entree_date").value;
-    let select_treuil =  select_generique(document, infos_fixes["treuils"], "treuil", affectations["treuil"]);
-    let select_pilote_tr = select_generique(document, infos_fixes["pilotes_tr"], "pilote_tr", affectations["pilote_tr"]);
-    let select_remorqueur = select_generique(document, infos_fixes["remorqueurs"], "remorqueur", affectations["remorqueurs"]);
-    let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
     let select_chef_piste = select_generique(document, infos_fixes["pilotes"], "chef_piste", affectations["chef_piste"]);
-    for (let element of [select_treuil, select_pilote_tr, select_remorqueur, select_pilote_rq, select_chef_piste]) {
+    let texte_chef_piste = document.createTextNode("Chef de piste :");
+    let select_treuil =  select_generique(document, infos_fixes["treuils"], "treuil", affectations["treuil"]);
+    let texte_treuil = document.createTextNode("Treuil :");
+    let select_pilote_tr = select_generique(document, infos_fixes["pilotes_tr"], "pilote_tr", affectations["pilote_tr"]);
+    let texte_pilote_tr = document.createTextNode("Treuilleur :");
+    let select_remorqueur = select_generique(document, infos_fixes["remorqueurs"], "remorqueur", affectations["remorqueurs"]);
+    let texte_remorqueur = document.createTextNode("Remorqueur :");
+    let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
+    let texte_pilote_rq = document.createTextNode("Pilote Remorqueur");
+    for (let element of [texte_chef_piste, select_chef_piste, texte_treuil, select_treuil, texte_pilote_tr, select_pilote_tr, texte_remorqueur, select_remorqueur, texte_pilote_rq, select_pilote_rq]) {
         div_affectations.appendChild(element);
     }
+
     select_treuil.addEventListener("change", function() { requete_mise_a_jour(0, "treuil", this.value, date)});
     select_pilote_tr.addEventListener("change", function() { requete_mise_a_jour(0, "pilote_tr", this.value, date)});
     select_remorqueur.addEventListener("change", function() { requete_mise_a_jour(0, "remorqueur", this.value, date)});
