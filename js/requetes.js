@@ -64,7 +64,7 @@ async function recharger(
     tableau,
     infos_fixes
 ) {
-    let date_aujourdhui = Date.now();
+    let date_aujourdhui = new Date();
     let annee = date_aujourdhui.getFullYear();
     let mois = date_aujourdhui.getMonth();
     let jour = date_aujourdhui.getDate();
