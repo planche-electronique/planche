@@ -67,6 +67,17 @@ tr:nth-child(odd) {
    background-color: #EBEBEB;
 }
 
+td {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+select {
+    border-color: transparent;
+    border-radius: 5px;
+    background-color: transparent;
+}
+
 .paragraphe_texte_tableau {
     margin: 0;
     padding : 0;
