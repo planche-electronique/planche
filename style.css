@@ -63,6 +63,10 @@ td {
     text-align: center;
 }
 
+tr:nth-child(odd) {
+   background-color: #EBEBEB;
+}
+
 .paragraphe_texte_tableau {
     margin: 0;
     padding : 0;
