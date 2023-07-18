@@ -130,6 +130,7 @@ function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decol
     entree_heure.type = "time";
     entree_heure.value = heure;
     entree_heure.name = "une entree d'heure";
+    entree_heure.classList += " input_tr";
     bouton_envoi.type = "button";
     bouton_envoi.value = "Enregistrer";
     bouton_envoi.addEventListener("click", function() {

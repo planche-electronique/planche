@@ -97,6 +97,7 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
     entree_date.type = "date";
     entree_date.value = date_jour_str(); 
     entree_date.id = "entree_date";
+    entree_date.classList += " input_tr";
     a.appendChild(entree_date);
     li.appendChild(a);
     ul.appendChild(li);

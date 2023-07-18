@@ -74,7 +74,11 @@ td {
 
 select {
     border-color: transparent;
-    border-radius: 5px;
+    background-color: transparent;
+}
+
+.input_tr {
+    border-color: transparent;
     background-color: transparent;
 }
 
