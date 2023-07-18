@@ -82,6 +82,21 @@ select {
     background-color: transparent;
 }
 
+input[type="button"], button {
+    background-color: transparent;
+    border-radius: 5px;
+    border: solid gray;
+    border-width: 1px;
+}
+
+
+input[type="button"]:hover, button:hover {
+    background:rgba(200, 200, 200, 0.5);
+    border-radius: 5px;
+    border: solid black;
+    border-width: 1px;
+}
+
 .paragraphe_texte_tableau {
     margin: 0;
     padding : 0;
