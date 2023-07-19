@@ -92,6 +92,7 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
     /*ajoute le tableau*/
     let ul = document.createElement("ul");
     ul.className += "menu";
+    ul.id = "menu";
     body.appendChild(ul);
     let li = document.createElement("li");
     li.className.id = "date_menu";
@@ -111,12 +112,7 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
                 document,
                 entree_date.value,
                 tableau,
-                infos_fixes.immatriculations,
-                infos_fixes.pilotes,
-                infos_fixes.pilotes_tr,
-                infos_fixes.pilotes_rq,
-                infos_fixes.treuils,
-                infos_fixes.remorqueurs
+                infos_fixes,
             );
         }
     );
@@ -161,7 +157,7 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
 
 
 function chargement_affectations(document, affectations, infos_fixes) {
-    let div_affectations = document.getElementById("affectations");
+    let menu = document.getElementById("menu");
     let date = document.getElementById("entree_date").value;
     let select_chef_piste = select_generique(document, infos_fixes["pilotes"], "chef_piste", affectations["chef_piste"]);
     let texte_chef_piste = document.createTextNode("Chef de piste :");
@@ -174,7 +170,9 @@ function chargement_affectations(document, affectations, infos_fixes) {
     let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
     let texte_pilote_rq = document.createTextNode("Pilote Remorqueur");
     for (let element of [texte_chef_piste, select_chef_piste, texte_treuil, select_treuil, texte_pilote_tr, select_pilote_tr, texte_remorqueur, select_remorqueur, texte_pilote_rq, select_pilote_rq]) {
-        div_affectations.appendChild(element);
+        let li = document.createElement("li");
+        li.appendChild(element);
+        menu.appendChild(li);
     }
 
     select_treuil.addEventListener("change", function() { requete_mise_a_jour(0, "treuil", this.value, date)});
@@ -199,9 +197,9 @@ function nettoyage_tableau(tableau) {
 
 
 
-function nettoyage_div_affectations(div_affectations) {
-    while(div_affectations.firstChild) {
-        div_affectations.removeChild(div_affectations.lastChild);
+function nettoyage_menu(menu) {
+    while(menu.childNodes.length > 1) {
+        menu.removeChild(menu.lastChild);
     }
 }
 
@@ -212,6 +210,6 @@ function nettoyage(document) {
     let tableau = document.getElementById("tableau");
     nettoyage_tableau(tableau);
 
-    let div_affectations = document.getElementById("affectations");
-    nettoyage_div_affectations(div_affectations);
+    let menu = document.getElementById("menu");
+    nettoyage_menu(menu);
 }
