@@ -163,7 +163,7 @@ function chargement_affectations(document, affectations, infos_fixes) {
     let select_remorqueur = select_generique(document, infos_fixes["remorqueurs"], "remorqueur", affectations["remorqueurs"]);
     let texte_remorqueur = document.createTextNode("Remorqueur :");
     let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
-    let texte_pilote_rq = document.createTextNode("Pilote Remorqueur");
+    let texte_pilote_rq = document.createTextNode("Pilote Remorqueur :");
     for (let element of [texte_chef_piste, select_chef_piste, texte_treuil, select_treuil, texte_pilote_tr, select_pilote_tr, texte_remorqueur, select_remorqueur, texte_pilote_rq, select_pilote_rq]) {
         let a = document.createElement("a");
         a.appendChild(element);
