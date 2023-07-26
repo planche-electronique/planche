@@ -126,7 +126,7 @@ async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
 function date_jour_str() {
     let date_ajd = new Date;
     let annee_ajd = date_ajd.getFullYear();
-    let mois_ajd = date_ajd.getMonth();
+    let mois_ajd = date_ajd.getMonth() + 1;
     let mois_ajd_str = mois_ajd.toString();
     if (mois_ajd_str.length <= 1) {
         mois_ajd_str = "0" + mois_ajd_str;
