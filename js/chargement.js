@@ -115,12 +115,10 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
             );
         }
     );
-    let div_tableau = document.createElement("div");
-    div_tableau.id = "table-container";
+   
     let tableau_html = document.createElement("table");
     tableau_html.id = "tableau";
-    div_tableau.appendChild(tableau_html);
-    body.appendChild(div_tableau);
+    body.appendChild(tableau_html);
 
     let thead = document.createElement("thead");
     thead.className += "ligne_info";
