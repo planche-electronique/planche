@@ -14,8 +14,9 @@
 
 async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
     let numero_vol_planeur = 0;
+    let tbody = document.getElementById("body_tableau");
     for (var vol of vols) {
-        let ligne = tableau.insertRow();
+        let ligne = tbody.insertRow();
         let numero_ogn = structuredClone(vol).numero_ogn;
         let cellule_bouton = ligne.insertCell();
         let bouton_supprimer = document.createElement("button");
@@ -90,21 +91,19 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
     
             
     /*ajoute le tableau*/
-    let ul = document.createElement("ul");
-    ul.className += "menu";
-    ul.id = "menu";
-    body.appendChild(ul);
-    let li = document.createElement("li");
-    li.className.id = "date_menu";
-    let a =document.createElement("a");
+    let div_menu = document.createElement("div");
+    div_menu.className += "menu";
+    div_menu.id = "menu";
+    body.appendChild(div_menu);
+    let a = document.createElement("a");
+    a.className.id = "date_menu";
     let entree_date = document.createElement("input");
     entree_date.type = "date";
     entree_date.value = date_jour_str(); 
     entree_date.id = "entree_date";
     entree_date.classList += " input_tr";
     a.appendChild(entree_date);
-    li.appendChild(a);
-    ul.appendChild(li);
+    div_menu.appendChild(a);
     entree_date.addEventListener(
         "change",
         function () { 
@@ -116,14 +115,12 @@ async function premier_chargement_tableau(document, infos_fixes, vols) {
             );
         }
     );
-    let li_affectations = document.createElement("li");
-    ul.appendChild(li_affectations);
-    let div_affectations = document.createElement("div");
-    div_affectations.id = "affectations";
-    li_affectations.appendChild(div_affectations);
+    let div_tableau = document.createElement("div");
+    div_tableau.id = "table-container";
     let tableau_html = document.createElement("table");
     tableau_html.id = "tableau";
-    body.appendChild(tableau_html);
+    div_tableau.appendChild(tableau_html);
+    body.appendChild(div_tableau);
 
     let thead = document.createElement("thead");
     thead.className += "ligne_info";
@@ -170,9 +167,9 @@ function chargement_affectations(document, affectations, infos_fixes) {
     let select_pilote_rq = select_generique(document, infos_fixes["pilotes_rq"], "pilote_rq", affectations["pilote_rq"]);
     let texte_pilote_rq = document.createTextNode("Pilote Remorqueur");
     for (let element of [texte_chef_piste, select_chef_piste, texte_treuil, select_treuil, texte_pilote_tr, select_pilote_tr, texte_remorqueur, select_remorqueur, texte_pilote_rq, select_pilote_rq]) {
-        let li = document.createElement("li");
-        li.appendChild(element);
-        menu.appendChild(li);
+        let a = document.createElement("a");
+        a.appendChild(element);
+        menu.appendChild(a);
     }
 
     select_treuil.addEventListener("change", function() { requete_mise_a_jour(0, "treuil", this.value, date)});

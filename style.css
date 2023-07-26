@@ -1,3 +1,8 @@
+html, body {
+    margin:0;
+    padding:0;
+}
+
 /*la plus belle page de connexion*/
 #code_pilote {
     text-align : center;
@@ -27,16 +32,12 @@ p {
 /*barre de menu*/
 .menu {
     background-color: rgb(214, 172, 172);
-    margin: 0px;
-    top:0;
-    right: 0px;
-    left: 0px;
-    position: fixed;
     width: 100%;
-    list-style-type: none;
-    display: flex;
-    height: 45px;
+    height: 40px;
+    margin-bottom: 10px;
+    position: fixed;
 }
+
 .text_menu {
     float:left;
     margin: 5px;
@@ -45,27 +46,50 @@ p {
 
 #date_menu {
     float:left;
-    margin:5px;
-    margin-right: 20px;
-    margin-left: 15px;
+    padding: 5px;
+    text-decoration:none;
+    font-size: 17px;
+}
+
+.menu a {
+    float: left;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    font-size: 17px;
 }
 
 
 
 /* barre du haut du tableau*/
+.table-container {
+    overflow-y:auto;    
+}
+
 table {
-    margin-top: 45px;
     border-collapse: collapse;
     width: 100%;
+    top: 80px
+}
+
+thead {
+    position: sticky;
+    top: 40px;
+    height: 40px;
+    margin: 0;
+    z-index: 0;
 }
 
 thead th {
-    position: sticky;
-    position: -webkit-sticky;
-    top:45px;
-    z-index: 999;
     background-color: #fff;
     color: #000;
+}
+
+tbody:before { /* ligne avant pour passer sous le titre thead*/
+    line-height: 40px;
+    content:".";
+    color:white; /* bacground color */
+    display:block;
 }
 
 td {
