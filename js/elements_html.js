@@ -135,6 +135,7 @@ function heure_tableau_generique(document, parent, vol, champ_heure, heure, nume
     let decollage = temps_texte_vers_heure_type(vol.decollage);
     let atterissage = temps_texte_vers_heure_type(vol.atterissage);
     let label = document.createElement("label");
+    let date = date_jour_str().replaceAll("-", "/");
     parent.appendChild(label);
     label.for = heure + numero_ogn;
     let entree_heure = document.createElement("input");
@@ -157,10 +158,10 @@ function heure_tableau_generique(document, parent, vol, champ_heure, heure, nume
             
         } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(entree_heure.value))) {
             recharger_temps_vol(document, numero_ogn);
-            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value, date);
         } else if ((champ_heure == "atterissage") && (decollage < temps_texte_vers_heure_type(entree_heure.value))) {
             recharger_temps_vol(document, numero_ogn);
-            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value, date);
         }
     });
 }
