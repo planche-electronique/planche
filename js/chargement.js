@@ -99,8 +99,8 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         let atterissage = temps_texte_vers_heure_type(vol.atterissage);
     
         
-        if (vol.atterissage == "" || vol.decollage ==  "") {
-            texte_tableau_generique(document, ligne, vol, "", "atterissage");
+        if (vol.atterissage == "" || vol.decollage ==  "" || vol.edcollage == "00:00" || vol.atterissage == "00:00") {
+            texte_tableau_generique(document, ligne, vol, "", "temps_vol");
         } else {
             let temps_vol = atterissage - decollage;
             let heures = Math.floor(temps_vol / 3600000).toString();
