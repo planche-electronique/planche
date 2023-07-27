@@ -51,20 +51,20 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         select_generique_tableau("pilote2", vol["pilote2"], ligne, vol, infos_fixes);
 
         //heure de decollage
-        if (vol.decollage == "") {
+        if (vol.decollage == "" || vol.decollage == "00:00") {
             //bouton pour décoller
-            let cellule_bouton = ligne.insertCell();
-            cellule_bouton.id = "decollage" + structuredClone(vol).numero_ogn;
+            let cellule_decollage = ligne.insertCell();
+            cellule_decollage.id = "decollage" + structuredClone(vol).numero_ogn;
             let bouton_decollage = bouton_mettre_heure(document, structuredClone(vol), "decollage", "Décoller");
             cellule_decollage.appendChild(bouton_decollage);
             bouton_decollage.addEventListener("click", function(){
                 this.remove();
-                heure_tableau_generique(document, cellule_bouton, vol, champ, numero_ogn);
+                heure_tableau_generique(document, cellule_decollage, vol, "decollage", heure_actuelle_str(), numero_ogn);
                 recharger_temps_vol(document, numero_ogn);
 
                 let cellule_atterissage = document.getElementById("atterissage" + structuredClone(vol).numero_ogn);
                 while (cellule_atterissage.childNodes.length > 0) {
-                    cellule_atterissage.removeLastChild();
+                    cellule_atterissage.removeChild(cellule_atterissage.lastChild);
                 }
                 let bouton_atterissage = bouton_mettre_heure(document, vol, "atterissage", "Atterir");
                 cellule_atterissage.appendChild(bouton_atterissage);

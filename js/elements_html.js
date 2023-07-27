@@ -149,7 +149,7 @@ function heure_tableau_generique(document, parent, vol, champ_heure, heure, nume
     bouton_envoi.type = "button";
     bouton_envoi.value = "Enregistrer";
     bouton_envoi.addEventListener("click", function() {
-        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value))) {
+        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value)) && (vol.atterissage != "00:00")) {
             alert("Le décollage ne peut pas etre plus tard que l'atterissage !");
             
         } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(entree_heure.value))) {
