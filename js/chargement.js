@@ -13,9 +13,9 @@
 
 
 async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
-    let numero_vol_planeur = 0;
+    let numero_vol_planeur = vols.length;
     let tbody = document.getElementById("body_tableau");
-    for (var vol of vols) {
+    for (var vol of vols.reverse()) {
         let ligne = tbody.insertRow();
         let numero_ogn = structuredClone(vol).numero_ogn;
         let cellule_bouton = ligne.insertCell();
@@ -29,7 +29,7 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         
         //numero si pas affecte i.e. si numero_ogn > 0
         if (numero_ogn > 0) {
-            numero_vol_planeur += 1;
+            numero_vol_planeur -= 1;
             texte_tableau_generique(document, ligne, vol, numero_vol_planeur, "numero_ligne");
         } else {
             texte_tableau_generique(document, ligne, vol, "", "numero_ligne");
