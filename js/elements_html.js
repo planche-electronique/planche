@@ -102,8 +102,9 @@ function nettoyer_et_ajouter_au_select(select, liste) {
 
 
 
-function texte_tableau_generique(document, ligne, texte, champ, vol) {
+function texte_tableau_generique(document, ligne, vol, texte, champ) {
     let cellule = ligne.insertCell();
+    cellule.id = champ + structuredClone(vol).numero_ogn;
     // let texte_node = document.createTextNode(texte)
     let paragraphe = document.createElement("p");
     paragraphe.textContent = texte;
@@ -115,42 +116,64 @@ function texte_tableau_generique(document, ligne, texte, champ, vol) {
 
 
 
-function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decollage, atterissage) {
-    
-    let numero_ogn = structuredClone(vol).numero_ogn;
-    
+function heure_tableau_generique_cellule(document, ligne, vol, champ_heure, numero_ogn) {
     let cellule = ligne.insertCell();
+    cellule.id = champ_heure + structuredClone(vol).numero_ogn;
+    let heure;
+    if (champ_heure == "decollage") {
+        heure = structuredClone(vol).decollage;
+    } else {
+        heure = structuredClone(vol).atterissage;
+    }
+    heure_tableau_generique(document, cellule, vol, champ_heure, heure, numero_ogn);
+}
+
+
+
+
+function heure_tableau_generique(document, parent, vol, champ_heure, heure, numero_ogn) {
+    let decollage = temps_texte_vers_heure_type(vol.decollage);
+    let atterissage = temps_texte_vers_heure_type(vol.atterissage);
     let label = document.createElement("label");
-    cellule.appendChild(label);
+    let date = date_jour_str().replaceAll("-", "/");
+    parent.appendChild(label);
     label.for = heure + numero_ogn;
     let entree_heure = document.createElement("input");
-    cellule.appendChild(entree_heure);
+    parent.appendChild(entree_heure);
     let bouton_envoi = document.createElement("input");
-    cellule.appendChild(bouton_envoi);
+    parent.appendChild(bouton_envoi);
     entree_heure.type = "time";
     entree_heure.value = heure;
     entree_heure.name = "une entree d'heure";
+    entree_heure.id = "entree" + champ_heure + numero_ogn;
+    entree_heure.classList += " input_tr";
     bouton_envoi.type = "button";
     bouton_envoi.value = "Enregistrer";
     bouton_envoi.addEventListener("click", function() {
-        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value))) {
+        if ((champ_heure == "decollage") && (atterissage < temps_texte_vers_heure_type(entree_heure.value)) && (vol.atterissage != "00:00")) {
             alert("Le décollage ne peut pas etre plus tard que l'atterissage !");
             
         } else if ((champ_heure == "atterissage") && (decollage > temps_texte_vers_heure_type(entree_heure.value))) {
             alert("L'atterissage ne peut pas être plus tôt que le décollage !");
             
         } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(entree_heure.value))) {
-            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
-            let temps_vol = atterissage - temps_texte_vers_heure_type(entree_heure.value);
-            let temps_vol_texte = temps_type_vers_temps_texte(temps_vol);
-            let paragraphe = document.getElementById(numero_ogn + "temps_vol");
-            paragraphe.innerHTML = temps_vol_texte;
-            
-            
+            recharger_temps_vol(document, numero_ogn);
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value, date);
         } else if ((champ_heure == "atterissage") && (decollage < temps_texte_vers_heure_type(entree_heure.value))) {
-            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
+            recharger_temps_vol(document, numero_ogn);
+            requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value, date);
         }
     });
+}
+
+
+
+
+function bouton_mettre_heure(document, vol, champ, titre) {    
+    let bouton = document.createElement("button");
+    bouton.innerHTML = titre;
+    bouton.id = "bouton_"+ champ + structuredClone(vol).numero_ogn.toString();
+    return bouton;
 }
 
 

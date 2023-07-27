@@ -64,14 +64,8 @@ async function recharger(
     tableau,
     infos_fixes
 ) {
-    let date_aujourdhui = Date.now();
-    let annee = date_aujourdhui.getFullYear();
-    let mois = date_aujourdhui.getMonth();
-    let jour = date_aujourdhui.getDate();
-    let date_aujourdhui_tirets = annee+"-"+mois+"-"+jour;
-    while(tableau.rows.length > 1) {
-        tableau.deleteRow(1);
-    }
+    let date_aujourdhui_tirets = date_jour_str();
+    nettoyage(document);
     let vols;
     if (date_aujourdhui_tirets == date_format_tirets) {
         let planche = await lire_json("./planche/");

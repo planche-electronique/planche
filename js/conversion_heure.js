@@ -30,7 +30,6 @@ function temps_type_vers_temps_texte(temps_type) {
         } else {
             minutes = minutes.toString();
         }
-        console.log(heures + ":" + minutes);
         return (heures + ":" + minutes);
 }
 
