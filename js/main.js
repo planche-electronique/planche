@@ -139,4 +139,22 @@ function date_jour_str() {
     let date_ajd_str = annee_ajd + "-" + mois_ajd_str + "-" + jour_ajd_str;
     return date_ajd_str;
 }
- 
+
+
+
+
+function heure_actuelle_str() {
+    let date = new Date;
+    let heures = date.getHours();
+    let heures_str = heures;
+    if (heures < 10) {
+        heures_str = "0" + heures;
+    }
+    let minutes = date.getMinutes();
+    let minutes_str = minutes;
+    if (minutes < 10) {
+        minutes_str = "0" + minutes;
+    }
+    let heure_actuelle = heures_str + ":" + minutes_str;
+    return heure_actuelle;
+} 

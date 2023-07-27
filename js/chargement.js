@@ -52,15 +52,15 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
 
         //heure de decollage
         if (vol.decollage == "") {
-            console.log(1);
             //bouton pour décoller
             let cellule_bouton = ligne.insertCell();
             cellule_bouton.id = "decollage" + structuredClone(vol).numero_ogn;
-            let bouton_decollage = bouton_mettre_heure(document, vol, "decollage", "Décoller");
+            let bouton_decollage = bouton_mettre_heure(document, structuredClone(vol), "decollage", "Décoller");
             cellule_decollage.appendChild(bouton_decollage);
             bouton_decollage.addEventListener("click", function(){
                 this.remove();
-                heure_tableau_generique(document, cellule_bouton, vol, champ);
+                heure_tableau_generique(document, cellule_bouton, vol, champ, numero_ogn);
+                recharger_temps_vol(document, numero_ogn);
 
                 let cellule_atterissage = document.getElementById("atterissage" + structuredClone(vol).numero_ogn);
                 while (cellule_atterissage.childNodes.length > 0) {
@@ -70,13 +70,14 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
                 cellule_atterissage.appendChild(bouton_atterissage);
                 bouton_atterissage.addEventListener("click", function() {
                     this.remove();
-                    heure_tableau_generique(document, cellule_atterissage, vol, "atterissage", "");
+                    heure_tableau_generique(document, cellule_atterissage, vol, "atterissage", heure_actuelle_str(), numero_ogn);
+                    recharger_temps_vol(document, numero_ogn);
                 })
             });
             //et rien pour l'atterissage
             texte_tableau_generique(document, ligne, vol, "", "atterissage");
         } else {
-            heure_tableau_generique_cellule(document, ligne, vol, "decollage", structuredClone(vol).decollage);
+            heure_tableau_generique_cellule(document, ligne, vol, "decollage", numero_ogn);
             // heure attero
             if (vol.atterissage == "" || vol.atterissage == "00:00") {
 
@@ -86,31 +87,19 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
                 cellule_atterissage.appendChild(bouton_atterissage);
                 bouton_atterissage.addEventListener("click", function() {
                     this.remove();
-                    heure_tableau_generique(document, cellule_atterissage, vol, "atterissage", "");
+                    heure_tableau_generique(document, cellule_atterissage, vol, "atterissage", heure_actuelle_str(), numero_ogn);
+                    recharger_temps_vol(document, numero_ogn);
                 });
             } else {
-                heure_tableau_generique_cellule(document, ligne, vol, "atterissage", structuredClone(vol).atterissage);
+                heure_tableau_generique_cellule(document, ligne, vol, "atterissage", numero_ogn);
             }
         }
 
         
-
-        let decollage = temps_texte_vers_heure_type(vol.decollage);
-        let atterissage = temps_texte_vers_heure_type(vol.atterissage);
-    
-        
-        if (vol.atterissage == "" || vol.decollage ==  "" || vol.edcollage == "00:00" || vol.atterissage == "00:00") {
+        if (vol.atterissage == "" || vol.decollage ==  "" || vol.decollage == "00:00" || vol.atterissage == "00:00") {
             texte_tableau_generique(document, ligne, vol, "", "temps_vol");
         } else {
-            let temps_vol = atterissage - decollage;
-            let heures = Math.floor(temps_vol / 3600000).toString();
-            let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
-            if (minutes < 10) {
-                minutes = "0" + minutes.toString();
-            } else {
-                minutes = minutes.toString();
-            }
-            vol.temps_vol = heures + ":" + minutes;
+            temps_vol(vol);
             texte_tableau_generique(document, ligne, vol, structuredClone(vol).temps_vol, "temps_vol");
         }
     }
@@ -249,4 +238,57 @@ function nettoyage(document) {
 
     let menu = document.getElementById("menu");
     nettoyage_menu(menu);
+}
+
+
+
+
+function temps_vol(vol) {
+    let decollage = temps_texte_vers_heure_type(vol.decollage);
+    let atterissage = temps_texte_vers_heure_type(vol.atterissage);
+    let temps_vol = atterissage - decollage;
+
+    let heures = Math.floor(temps_vol / 3600000).toString();
+    let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
+    if (minutes < 10) {
+        minutes = "0" + minutes.toString();
+    } else {
+        minutes = minutes.toString();
+    }
+    let temps_vol_str = heures + ":" + minutes;
+
+    return temps_vol_str;
+}
+
+function recharger_temps_vol(document, numero_ogn) {
+    let cellule_temps_vol = document.getElementById("temps_vol" + numero_ogn);
+
+    while (cellule_temps_vol.childNodes.length>0) {
+        cellule_temps_vol.removeChild(cellule_temps_vol.lastChild);
+    }
+    cellule_temps_vol.innerHTML = "caca";
+     let entree_decollage = document.getElementById("entreedecollage" + numero_ogn)
+    let decollage = entree_decollage.value;
+    let decollage_type = temps_texte_vers_heure_type(decollage);
+
+    let entree_atterissage = document.getElementById("entreeatterissage" + numero_ogn)
+    if (entree_atterissage != null) {
+        let atterissage = entree_atterissage.value;
+        let atterissage_type = temps_texte_vers_heure_type(atterissage);
+
+        let temps_vol = atterissage_type - decollage_type;
+
+        let heures = Math.floor(temps_vol / 3600000).toString();
+        let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
+        if (minutes < 10) {
+            minutes = "0" + minutes.toString();
+        } else {
+            minutes = minutes.toString();
+        }
+        let temps_vol_str = heures + ":" + minutes;
+        while (cellule_temps_vol.childNodes.length>0) {
+            cellule_temps_vol.removeChild(cellule_temps_vol.lastChild);
+        }
+        cellule_temps_vol.innerHTML = temps_vol_str;
+   }
 }

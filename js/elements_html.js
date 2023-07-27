@@ -116,7 +116,7 @@ function texte_tableau_generique(document, ligne, vol, texte, champ) {
 
 
 
-function heure_tableau_generique_cellule(document, ligne, vol, champ_heure) {
+function heure_tableau_generique_cellule(document, ligne, vol, champ_heure, numero_ogn) {
     let cellule = ligne.insertCell();
     cellule.id = champ_heure + structuredClone(vol).numero_ogn;
     let heure;
@@ -125,17 +125,15 @@ function heure_tableau_generique_cellule(document, ligne, vol, champ_heure) {
     } else {
         heure = structuredClone(vol).atterissage;
     }
-    heure_tableau_generique(document, cellule, vol, champ_heure, heure);
+    heure_tableau_generique(document, cellule, vol, champ_heure, heure, numero_ogn);
 }
 
 
 
 
-function heure_tableau_generique(document, parent, vol, champ_heure, heure) {
+function heure_tableau_generique(document, parent, vol, champ_heure, heure, numero_ogn) {
     let decollage = temps_texte_vers_heure_type(vol.decollage);
     let atterissage = temps_texte_vers_heure_type(vol.atterissage);
-    
-    let numero_ogn = structuredClone(vol).numero_ogn;
     let label = document.createElement("label");
     parent.appendChild(label);
     label.for = heure + numero_ogn;
@@ -146,6 +144,7 @@ function heure_tableau_generique(document, parent, vol, champ_heure, heure) {
     entree_heure.type = "time";
     entree_heure.value = heure;
     entree_heure.name = "une entree d'heure";
+    entree_heure.id = "entree" + champ_heure + numero_ogn;
     entree_heure.classList += " input_tr";
     bouton_envoi.type = "button";
     bouton_envoi.value = "Enregistrer";
@@ -157,12 +156,10 @@ function heure_tableau_generique(document, parent, vol, champ_heure, heure) {
             alert("L'atterissage ne peut pas être plus tôt que le décollage !");
             
         } else if ((champ_heure == "decollage") && (atterissage > temps_texte_vers_heure_type(entree_heure.value))) {
+            recharger_temps_vol(document, numero_ogn);
             requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
-            let temps_vol = atterissage - temps_texte_vers_heure_type(entree_heure.value);
-            let temps_vol_texte = temps_type_vers_temps_texte(temps_vol);
-            let paragraphe = document.getElementById(numero_ogn + "temps_vol");
-            paragraphe.innerHTML = temps_vol_texte;
         } else if ((champ_heure == "atterissage") && (decollage < temps_texte_vers_heure_type(entree_heure.value))) {
+            recharger_temps_vol(document, numero_ogn);
             requete_mise_a_jour(numero_ogn, champ_heure, entree_heure.value);
         }
     });
