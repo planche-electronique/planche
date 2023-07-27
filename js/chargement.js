@@ -29,10 +29,10 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         
         //numero si pas affecte i.e. si numero_ogn > 0
         if (numero_ogn > 0) {
-            texte_tableau_generique(document, ligne, numero_vol_planeur, "numero_ligne", vol);
             numero_vol_planeur += 1;
+            texte_tableau_generique(document, ligne, vol, numero_vol_planeur, "numero_ligne");
         } else {
-            texte_tableau_generique(document, ligne, "", "numero_ligne", vol);
+            texte_tableau_generique(document, ligne, vol, "", "numero_ligne");
         }
         //code de decollage
         select_generique_tableau("code_decollage", vol["code_decollage"], ligne, vol, infos_fixes);
@@ -52,25 +52,54 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
 
         let decollage = temps_texte_vers_heure_type(vol.decollage);
         let atterissage = temps_texte_vers_heure_type(vol.atterissage);
-
+        console.log(vol.decollage);
         //heure de decollage
-        heure_tableau_generique(document, ligne, vol, "decollage", structuredClone(vol).decollage, decollage, atterissage);
-        //heure d'atterissage
-        
-        heure_tableau_generique(document, ligne, vol, "atterissage", structuredClone(vol).atterissage, decollage, atterissage);
-        //hdv       
-        
-        let temps_vol = atterissage - decollage;
-        let heures = Math.floor(temps_vol / 3600000).toString();
-        let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
-        if (minutes < 10) {
-            minutes = "0" + minutes.toString();
+        if (vol.decollage == "") {
+            //bouton pour décoller
+            let cellule_bouton = ligne.insertCell();
+            let bouton_decollage = document.createElement("button");
+            bouton_decollage.innerHTML = "Décoller";
+            bouton_decollage.id = "bouton_decollage" + structuredClone(vol).numero_ogn.toString();
+            cellule_bouton.appendChild(bouton_decollage);
+            bouton_decollage.addEventListener("click", function(){
+                this.remove();
+                heure_tableau_generique(document, cellule_bouton, vol, "decollage", decollage, atterissage);
+            });
+            //et rien pour l'atterissage
+            texte_tableau_generique(document, ligne, vol, "", "atterissage");
         } else {
-            minutes = minutes.toString();
+            heure_tableau_generique_cellule(document, ligne, vol, "decollage", structuredClone(vol).decollage, decollage, atterissage);
+            // heure attero
+            if (vol.atterissage == "") {
+                //bouton pour atterir
+            let cellule_bouton = ligne.insertCell();
+            let bouton_atterissage = document.createElement("button");
+            bouton_atterissage.innerHTML = "Atterir";
+            bouton_atterissage.id = "bouton_atterissage" + structuredClone(vol).numero_ogn.toString();
+            cellule_bouton.appendChild(bouton_atterissage);
+            bouton_atterissage.addEventListener("click", function(){
+                this.remove();
+                heure_tableau_generique(document, cellule_bouton, vol, "atterissage", decollage, atterissage);
+            });
+            } else {
+                heure_tableau_generique_cellule(document, ligne, vol, "atterissage", structuredClone(vol).atterissage, decollage, atterissage);
+            }
         }
-                
-        vol.temps_vol = heures + ":" + minutes;
-        texte_tableau_generique(document, ligne, structuredClone(vol).temps_vol, "temps_vol", vol);
+        
+        if (vol.atterissage == "" || vol.decollage ==  "") {
+            texte_tableau_generique(document, ligne, vol, "", "atterissage");
+        } else {
+            let temps_vol = atterissage - decollage;
+            let heures = Math.floor(temps_vol / 3600000).toString();
+            let minutes = Math.floor((temps_vol-heures*3600000) / 60000);
+            if (minutes < 10) {
+                minutes = "0" + minutes.toString();
+            } else {
+                minutes = minutes.toString();
+            }
+            vol.temps_vol = heures + ":" + minutes;
+            texte_tableau_generique(document, ligne, vol, structuredClone(vol).temps_vol, "temps_vol");
+        }
     }
 }
 

@@ -102,7 +102,7 @@ function nettoyer_et_ajouter_au_select(select, liste) {
 
 
 
-function texte_tableau_generique(document, ligne, texte, champ, vol) {
+function texte_tableau_generique(document, ligne, vol, texte, champ) {
     let cellule = ligne.insertCell();
     // let texte_node = document.createTextNode(texte)
     let paragraphe = document.createElement("p");
@@ -115,18 +115,25 @@ function texte_tableau_generique(document, ligne, texte, champ, vol) {
 
 
 
-function heure_tableau_generique(document, ligne, vol, champ_heure, heure, decollage, atterissage) {
+function heure_tableau_generique_cellule(document, ligne, vol, champ_heure, decollage, atterissage) {
+    let cellule = ligne.insertCell();
+    heure_tableau_generique(document, cellule, vol, champ_heure, decollage, atterissage);
+}
+
+
+
+
+function heure_tableau_generique(document, parent, vol, champ_heure, heure, decollage, atterissage) {
     
     let numero_ogn = structuredClone(vol).numero_ogn;
     
-    let cellule = ligne.insertCell();
     let label = document.createElement("label");
-    cellule.appendChild(label);
+    parent.appendChild(label);
     label.for = heure + numero_ogn;
     let entree_heure = document.createElement("input");
-    cellule.appendChild(entree_heure);
+    parent.appendChild(entree_heure);
     let bouton_envoi = document.createElement("input");
-    cellule.appendChild(bouton_envoi);
+    parent.appendChild(bouton_envoi);
     entree_heure.type = "time";
     entree_heure.value = heure;
     entree_heure.name = "une entree d'heure";
