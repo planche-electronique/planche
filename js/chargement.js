@@ -50,41 +50,54 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         // pilote 2 (eleve, passager...)
         select_generique_tableau("pilote2", vol["pilote2"], ligne, vol, infos_fixes);
 
-        let decollage = temps_texte_vers_heure_type(vol.decollage);
-        let atterissage = temps_texte_vers_heure_type(vol.atterissage);
-        console.log(vol.decollage);
         //heure de decollage
         if (vol.decollage == "") {
+            console.log(1);
             //bouton pour décoller
             let cellule_bouton = ligne.insertCell();
-            let bouton_decollage = document.createElement("button");
-            bouton_decollage.innerHTML = "Décoller";
-            bouton_decollage.id = "bouton_decollage" + structuredClone(vol).numero_ogn.toString();
-            cellule_bouton.appendChild(bouton_decollage);
+            cellule_bouton.id = "decollage" + structuredClone(vol).numero_ogn;
+            let bouton_decollage = bouton_mettre_heure(document, vol, "decollage", "Décoller");
+            cellule_decollage.appendChild(bouton_decollage);
             bouton_decollage.addEventListener("click", function(){
                 this.remove();
-                heure_tableau_generique(document, cellule_bouton, vol, "decollage", decollage, atterissage);
+                heure_tableau_generique(document, cellule_bouton, vol, champ);
+
+                let cellule_atterissage = document.getElementById("atterissage" + structuredClone(vol).numero_ogn);
+                while (cellule_atterissage.childNodes.length > 0) {
+                    cellule_atterissage.removeLastChild();
+                }
+                let bouton_atterissage = bouton_mettre_heure(document, vol, "atterissage", "Atterir");
+                cellule_atterissage.appendChild(bouton_atterissage);
+                bouton_atterissage.addEventListener("click", function() {
+                    this.remove();
+                    heure_tableau_generique(document, cellule_atterissage, vol, "atterissage", "");
+                })
             });
             //et rien pour l'atterissage
             texte_tableau_generique(document, ligne, vol, "", "atterissage");
         } else {
-            heure_tableau_generique_cellule(document, ligne, vol, "decollage", structuredClone(vol).decollage, decollage, atterissage);
+            heure_tableau_generique_cellule(document, ligne, vol, "decollage", structuredClone(vol).decollage);
             // heure attero
-            if (vol.atterissage == "") {
+            if (vol.atterissage == "" || vol.atterissage == "00:00") {
+
                 //bouton pour atterir
-            let cellule_bouton = ligne.insertCell();
-            let bouton_atterissage = document.createElement("button");
-            bouton_atterissage.innerHTML = "Atterir";
-            bouton_atterissage.id = "bouton_atterissage" + structuredClone(vol).numero_ogn.toString();
-            cellule_bouton.appendChild(bouton_atterissage);
-            bouton_atterissage.addEventListener("click", function(){
-                this.remove();
-                heure_tableau_generique(document, cellule_bouton, vol, "atterissage", decollage, atterissage);
-            });
+                let cellule_atterissage = ligne.insertCell();
+                let bouton_atterissage = bouton_mettre_heure(document, vol, "atterissage", "Atterrir");
+                cellule_atterissage.appendChild(bouton_atterissage);
+                bouton_atterissage.addEventListener("click", function() {
+                    this.remove();
+                    heure_tableau_generique(document, cellule_atterissage, vol, "atterissage", "");
+                });
             } else {
-                heure_tableau_generique_cellule(document, ligne, vol, "atterissage", structuredClone(vol).atterissage, decollage, atterissage);
+                heure_tableau_generique_cellule(document, ligne, vol, "atterissage", structuredClone(vol).atterissage);
             }
         }
+
+        
+
+        let decollage = temps_texte_vers_heure_type(vol.decollage);
+        let atterissage = temps_texte_vers_heure_type(vol.atterissage);
+    
         
         if (vol.atterissage == "" || vol.decollage ==  "") {
             texte_tableau_generique(document, ligne, vol, "", "atterissage");
