@@ -136,7 +136,6 @@ function heure_tableau_generique(document, parent, vol, champ_heure, heure) {
     let atterissage = temps_texte_vers_heure_type(vol.atterissage);
     
     let numero_ogn = structuredClone(vol).numero_ogn;
-    console.log(vol.decollage);
     let label = document.createElement("label");
     parent.appendChild(label);
     label.for = heure + numero_ogn;
