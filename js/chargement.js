@@ -29,8 +29,8 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         
         //numero si pas affecte i.e. si numero_ogn > 0
         if (numero_ogn > 0) {
-            numero_vol_planeur -= 1;
             texte_tableau_generique(document, ligne, vol, numero_vol_planeur, "numero_ligne");
+            numero_vol_planeur -= 1;
         } else {
             texte_tableau_generique(document, ligne, vol, "", "numero_ligne");
         }
