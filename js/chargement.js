@@ -99,8 +99,8 @@ async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
         if (vol.atterissage == "" || vol.decollage ==  "" || vol.decollage == "00:00" || vol.atterissage == "00:00") {
             texte_tableau_generique(document, ligne, vol, "", "temps_vol");
         } else {
-            temps_vol(vol);
-            texte_tableau_generique(document, ligne, vol, structuredClone(vol).temps_vol, "temps_vol");
+            console.log(structuredClone(vol).temps_vol);
+            texte_tableau_generique(document, ligne, vol, temps_vol(vol), "temps_vol");
         }
     }
 }
