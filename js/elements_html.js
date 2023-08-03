@@ -178,4 +178,16 @@ function bouton_mettre_heure(document, vol, champ, titre) {
 
 
 
+  function notification(bottom, right, html) {
 
+    let notification = document.createElement('div');
+    notification.className = "notification";
+
+    notification.style.bottom = bottom + 'px';
+    notification.style.right = right + 'px';
+
+    notification.innerHTML = html;
+    document.body.append(notification);
+
+    setTimeout(() => notification.remove(), 5000);
+}

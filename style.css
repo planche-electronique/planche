@@ -141,3 +141,13 @@ input[type="button"]:active, button:active {
     margin: 0;
     padding : 0;
 }
+
+.notification {
+    position: fixed;
+    z-index: 1000;
+    padding: 5px;
+    border: 1px solid black;
+    font-size: 20px;
+    background: orange;
+    text-align: center;
+}

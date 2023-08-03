@@ -15,6 +15,10 @@
 async function chargement_des_ressources(document, tableau, vols, infos_fixes) {
     let numero_vol_planeur = vols.length;
     let tbody = document.getElementById("body_tableau");
+    if (vols.length == 0) {
+        notification(5, 5, "Pas de vols ce jour");
+        
+    }
     for (var vol of vols.reverse()) {
         let ligne = tbody.insertRow();
         let numero_ogn = structuredClone(vol).numero_ogn;
