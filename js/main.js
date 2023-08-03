@@ -23,37 +23,9 @@ async function maitre(document) {
 }
 
 async function sous_maitre(document) {
-    let immatriculations = await lire_json('./immatriculations.json');    
-    let pilotes          = await lire_json('./pilotes.json');
-    let treuils          = await lire_json('./treuils.json');
-    let remorqueurs      = await lire_json('./remorqueurs.json');
-    let pilotes_tr       = await lire_json('./pilotes_tr.json');
-    let pilotes_rq       = await lire_json('./pilotes_rq.json');
-
-    const CodeDecollage = [
-        "T",
-        "R",
-    ];
     
-    const CodeVol = [
-        "B",
-        "S",
-        "E",
-        "C",
-        "M",
-    ]
-
-
-    let infos_fixes = {
-        "immatriculations": immatriculations,
-        "pilotes": pilotes,
-        "treuils": treuils,
-        "remorqueurs": remorqueurs,
-        "pilotes_tr": pilotes_tr,
-        "pilotes_rq": pilotes_rq,
-        "CodeDecollage": CodeDecollage,
-        "CodeVol": CodeVol
-    }
+    let infos_fixes = await lire_json('./infos.json');    
+    
     let vols;        
     let planche = await lire_json("./planche");
     vols = planche.vols;

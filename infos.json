@@ -105,5 +105,18 @@
         "F-CPOP",
         "F-CPFJ",
         "D-5434"
+    ],
+    
+    "CodeDecollage": [
+        "T",
+        "R",
+    ],
+    
+    "CodeVol": [
+        "B",
+        "S",
+        "E",
+        "C",
+        "M",
     ]
 }
