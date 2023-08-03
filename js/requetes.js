@@ -16,9 +16,12 @@ async function lire_json(adresse) {
     return await fetch(adresse)
         .then(response => {
             if (!response.ok) {
-                throw new Error("HTTP error" + response.status);
+                return Promise.reject(response);
             }
             return response.json();
+        })
+        .catch(error => {
+            notification(5, 5, "Impossible d'accéder à la ressource: " + adresse + error);
         })
 }
 
