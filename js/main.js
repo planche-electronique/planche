@@ -10,7 +10,7 @@
     Voir https://raw.githubusercontent.com/planche-electronique/planche/master/LICENSE pour la licence complète
 */
 
-
+let adresse_serveur = "http://127.0.0.1:7878/"
 
 
 async function maitre(document) {
@@ -23,14 +23,16 @@ async function maitre(document) {
 }
 
 async function sous_maitre(document) {
-    
-    let infos_fixes = await lire_json('./infos.json');    
+    console.log("lecture de la planche 1");
+    let infos_fixes = await lire_json(adresse_serveur+'./infos.json');    
     
     let vols;        
-    let planche = await lire_json("./planche");
+    console.log("Lecture de la planche");
+    let planche = await lire_json(adresse_serveur + "./planche");
+    console.log("Fin de lecture de la planche");
     vols = planche.vols;
     vols.mettre_a_jour = async function() {
-        let majs = await lire_json("./majs");
+        let majs = await lire_json(adresse_serveur +"./majs");
         for (let maj of majs) {
             let index_vol = vols.findIndex(vol => vol.numero_ogn == maj.numero_ogn);
             if (maj.champ_mis_a_jour != "supprimer" && maj.champ_mis_a_jour != "nouveau") {
@@ -76,7 +78,7 @@ async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
     let date = entree_date.value;
     let date_ajd_str = date_jour_str();
     if (date == date_ajd_str) { //today ...
-        let planche = await lire_json("./planche");
+        let planche = await lire_json(adresse_serveur + "./planche");
         await vols.mettre_a_jour();
         let affectations = planche.affectations;
         chargement_affectations(document, affectations, infos_fixes);

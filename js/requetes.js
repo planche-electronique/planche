@@ -21,6 +21,7 @@ async function lire_json(adresse) {
             return response.json();
         })
         .catch(error => {
+            console.log(adresse);
             notification(5, 5, "Impossible d'accéder à la ressource: " + adresse + error);
         })
 }
@@ -29,7 +30,7 @@ async function lire_json(adresse) {
 
 
 async function vols_du(date_format_slash) {
-    let adresse = "/vols/" + date_format_slash;
+    let adresse = adresse_serveur +"./vols/" + date_format_slash;
     return await lire_json(adresse);
 }
 
@@ -71,7 +72,8 @@ async function recharger(
     nettoyage(document);
     let vols;
     if (date_aujourdhui_tirets == date_format_tirets) {
-        let planche = await lire_json("./planche/");
+        console.log("fuck1");
+        let planche = await lire_json("127.0.0.1:7878/planche/");
         vols = planche["vols"];
         let affectations = planche["affectations"];
         chargement_affectations(document, affectations, infos_fixes);
