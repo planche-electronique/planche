@@ -29,14 +29,6 @@ async function lire_json(adresse) {
 
 
 
-async function vols_du(date_format_slash) {
-    let adresse = adresse_serveur +"./vols/" + date_format_slash;
-    return await lire_json(adresse);
-}
-
-
-
-
 async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur, date) {
     if (champ == "code_decollage") {
         requete_mise_a_jour(numero_ogn, "machine_decollage", "", date);
@@ -61,25 +53,32 @@ async function requete_mise_a_jour(numero_ogn, champ, nouvelle_valeur, date) {
 
 
 
+async function planche_du(date) {
+    let date_aujourdhui_slash = date_jour_str().replaceAll("-", "/");
+    let planche;
+    if (date_aujourdhui_slash == date) {
+        console.log(adresse_serveur + "planche/")
+        planche = await lire_json(adresse_serveur + "planche/");
+    } else {
+        planche = await lire_json(adresse_serveur + "planche?date=" + date)
+    }
+    return planche;
+}
+
 
 async function recharger(
     document,
-    date_format_tirets,
+    date,
     tableau,
     infos_fixes
 ) {
-    let date_aujourdhui_tirets = date_jour_str();
     nettoyage(document);
-    let vols;
-    if (date_aujourdhui_tirets == date_format_tirets) {
-        console.log("fuck1");
-        let planche = await lire_json("127.0.0.1:7878/planche/");
-        vols = planche["vols"];
-        let affectations = planche["affectations"];
-        chargement_affectations(document, affectations, infos_fixes);
-    } else {
-        vols = await vols_du(date_format_tirets.replaceAll("-", "/"));       
-    }
+    date_slash = date.replaceAll("-", "/");
+    let planche = await planche_du(date_slash);
+    let vols = planche["vols"];
+    let affectations = planche["affectations"];
+    chargement_affectations(document, affectations, infos_fixes);
+    
     await chargement_des_ressources(
         document,
         tableau,

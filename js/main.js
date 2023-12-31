@@ -78,12 +78,11 @@ async function mise_a_jour_automatique(document, tableau, infos_fixes, vols) {
     let date = entree_date.value;
     let date_ajd_str = date_jour_str();
     if (date == date_ajd_str) { //today ...
-        let planche = await lire_json(adresse_serveur + "./planche");
         await vols.mettre_a_jour();
-        let affectations = planche.affectations;
-        chargement_affectations(document, affectations, infos_fixes);
+        //chargement_affectations(document, affectations, infos_fixes);
     } else {
-        vols = await vols_du(date.replaceAll("-", "/"));
+        let planche = await lire_json(adresse_serveur + "planche?date="+ date.replaceAll("-", "/"));
+        vols = planche[vols];
     }
     await chargement_des_ressources(document, tableau, vols, infos_fixes);
     setTimeout(
